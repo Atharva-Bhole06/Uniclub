@@ -1,0 +1,220 @@
+/* ════════════════════════════════════
+   Faculty Shared Styles
+   ════════════════════════════════════ */
+
+.page {
+  padding: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Event Approval ──────────────────────────────── */
+.approvalList { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.approvalCard {
+  display: flex;
+  gap: 1.5rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 1.5rem;
+  align-items: flex-start;
+  transition: border-color 0.2s ease;
+}
+
+.approvalCard:hover { border-color: rgba(255,255,255,0.1); }
+
+.approvalImg {
+  width: 160px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.approvalImg img { width: 100%; height: 100%; object-fit: cover; }
+
+.approvalInfo { flex: 1; }
+
+.clubBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #c9f28f;
+  background: rgba(201,242,143,0.08);
+  border: 1px solid rgba(201,242,143,0.2);
+  padding: 0.2rem 0.65rem;
+  border-radius: 100px;
+  margin-bottom: 0.5rem;
+}
+
+.approvalTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.4rem;
+}
+
+.approvalDesc {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin: 0 0 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.approvalMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.approvalMeta span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.approvalActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* ── Attendance Monitor ──────────────────────────── */
+.attendanceLayout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  height: calc(100vh - 180px);
+}
+
+.eventsList {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.panelTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1.25rem;
+}
+
+.eventSelectRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-bottom: 0.25rem;
+}
+
+.eventSelectRow:hover { background: rgba(255,255,255,0.04); }
+.selected { background: rgba(201,242,143,0.06) !important; border: 1px solid rgba(201,242,143,0.15); }
+
+.eventSelectTitle { font-size: 0.88rem; font-weight: 600; color: #fff; margin: 0 0 0.2rem; }
+.eventSelectDate { font-size: 0.75rem; color: #6b7280; margin: 0; }
+
+.attendancePanel {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.selectPrompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.attendanceStats {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.rateCircle {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 4px solid rgba(201,242,143,0.3);
+  background: rgba(201,242,143,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rateNum { font-size: 1.75rem; font-weight: 800; color: #c9f28f; }
+.rateLabel { font-size: 0.65rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.attendanceCounts { display: flex; gap: 2rem; }
+.attendanceCounts > div { display: flex; flex-direction: column; }
+.countNum { font-size: 1.75rem; font-weight: 800; color: #fff; }
+.countLabel { font-size: 0.75rem; color: #6b7280; }
+
+.studentList { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.studentRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+}
+
+.studentAvatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #1a1a1a;
+  color: #9ca3af;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.studentInfo { flex: 1; }
+.studentName { font-size: 0.88rem; font-weight: 600; color: #fff; margin: 0; }
+.studentEmail { font-size: 0.75rem; color: #6b7280; margin: 0; }
+
+.attendanceMark {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+  .attendanceLayout { grid-template-columns: 1fr; height: auto; }
+  .approvalCard { flex-direction: column; }
+  .approvalImg { width: 100%; height: 200px; }
+}
+
+@media (max-width: 768px) {
+  .page { padding: 1.5rem; }
+}

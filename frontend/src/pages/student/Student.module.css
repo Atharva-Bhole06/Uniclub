@@ -1,0 +1,469 @@
+/* ════════════════════════════════════
+   Shared Student Page Styles
+   ════════════════════════════════════ */
+
+.page {
+  padding: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Greeting ────────────────────────────────────── */
+.greeting { margin-bottom: 2rem; }
+
+.greetTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.25rem;
+  letter-spacing: -0.03em;
+}
+
+.accent {
+  color: #c9f28f;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+}
+
+.greetSub { color: #6b7280; font-size: 0.95rem; margin: 0; }
+
+/* ── Stats Row ───────────────────────────────────── */
+.statsRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.statPill {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  min-width: 140px;
+  transition: all 0.25s ease;
+}
+
+.statPill:hover {
+  border-color: rgba(201,242,143,0.2);
+  background: #161616;
+}
+
+.statIcon { color: #c9f28f; }
+
+.statNum {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.statLab { font-size: 0.78rem; color: #6b7280; }
+
+/* ── Section ─────────────────────────────────────── */
+.section { margin-bottom: 3rem; }
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.25rem;
+}
+
+.seeAll {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #9ca3af;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.seeAll:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+
+/* ── Grids ───────────────────────────────────────── */
+.eventsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.clubsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ── Filter Row ──────────────────────────────────── */
+.filterRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4b5563;
+}
+
+.searchInput {
+  width: 100%;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.searchInput:focus { border-color: rgba(201,242,143,0.3); }
+.searchInput::placeholder { color: #4b5563; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.chip {
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #9ca3af;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.chip:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+
+.chipActive {
+  background: rgba(201,242,143,0.1);
+  border-color: rgba(201,242,143,0.3);
+  color: #c9f28f;
+}
+
+.sortSelect {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+
+/* ── Notifications ────────────────────────────────── */
+.notifList { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.notifItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+}
+
+.unread { border-color: rgba(201,242,143,0.15); background: rgba(201,242,143,0.03); }
+
+.notifDot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #c9f28f;
+  margin-top: 0.35rem;
+  flex-shrink: 0;
+}
+
+.notifMsg { font-size: 0.9rem; color: #e5e7eb; margin: 0 0 0.25rem; }
+.notifTime { font-size: 0.75rem; color: #6b7280; }
+
+/* ── Back button ─────────────────────────────────── */
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #9ca3af;
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: 0.2s ease;
+}
+.backBtn:hover { color: #fff; border-color: rgba(255,255,255,0.2); }
+
+/* ── Club Detail ─────────────────────────────────── */
+.clubHero {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.clubHeroImg { width: 100%; height: 100%; object-fit: cover; }
+
+.clubHeroOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%);
+}
+
+.clubHeroContent {
+  position: absolute;
+  bottom: 2rem; left: 2rem;
+}
+
+.clubCategory {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c9f28f;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(201,242,143,0.3);
+  padding: 0.3rem 0.75rem;
+  border-radius: 100px;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.clubName { font-size: 2.5rem; font-weight: 800; color: #fff; margin: 0 0 0.5rem; letter-spacing: -0.03em; }
+
+.clubMeta { display: flex; gap: 1.5rem; color: #d1d5db; font-size: 0.9rem; }
+
+.clubBody { display: flex; flex-direction: column; gap: 3rem; }
+
+.clubAbout { max-width: 680px; }
+
+.clubDesc { color: #9ca3af; line-height: 1.7; margin-bottom: 1.5rem; }
+
+/* ── Members ────────────────────────────────────── */
+.membersList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.memberChip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+.memberAvatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(201,242,143,0.1);
+  border: 1px solid rgba(201,242,143,0.2);
+  color: #c9f28f;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.memberName { font-size: 0.9rem; font-weight: 600; color: #fff; margin: 0; }
+.memberRole { font-size: 0.75rem; color: #6b7280; margin: 0; text-transform: capitalize; }
+
+/* ── Event Detail ─────────────────────────────────── */
+.eventDetailHero {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  border-radius: 24px;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.eventDetailImg { width: 100%; height: 100%; object-fit: cover; }
+
+.eventDetailOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.15) 60%);
+}
+
+.eventDetailHeroContent {
+  position: absolute;
+  bottom: 2rem; left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.eventDetailTitle {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.03em;
+  max-width: 700px;
+}
+
+.eventDetailClub { color: #c9f28f; font-size: 0.9rem; font-weight: 600; margin: 0; }
+.eventDetailBody { display: flex; flex-direction: column; gap: 2rem; }
+
+.eventMeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.metaBlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 1rem;
+  color: #c9f28f;
+}
+
+.metaBlock small { display: block; font-size: 0.72rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+.metaBlock strong { display: block; font-size: 0.95rem; color: #fff; margin-top: 0.2rem; }
+.metaBlock div { flex: 1; }
+
+.eventDescBlock { max-width: 720px; }
+.eventDesc { color: #9ca3af; line-height: 1.8; font-size: 0.95rem; }
+
+.successBanner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(201,242,143,0.08);
+  border: 1px solid rgba(201,242,143,0.25);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  color: #c9f28f;
+  font-size: 0.9rem;
+}
+
+.clashBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
+.clashBanner strong { display: block; margin-bottom: 0.25rem; }
+.clashBanner p { margin: 0; }
+
+/* ── My Events ────────────────────────────────────── */
+.myEventCard { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.myEventActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.feedbackBtn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.06);
+  color: #9ca3af;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.feedbackBtn:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+
+/* ── Feedback Page ────────────────────────────────── */
+.feedbackCard {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 600px;
+}
+
+.feedbackTitle { font-size: 1.75rem; font-weight: 800; color: #fff; margin: 0 0 0.25rem; }
+.feedbackEventName { color: #c9f28f; font-size: 0.9rem; margin: 0 0 2rem; }
+.feedbackForm { display: flex; flex-direction: column; gap: 1.5rem; }
+
+.ratingSection { display: flex; flex-direction: column; gap: 0.75rem; }
+.ratingLabel { font-size: 0.85rem; font-weight: 600; color: #d1d5db; }
+.stars { display: flex; gap: 0.5rem; }
+.starBtn { background: transparent; border: none; cursor: pointer; padding: 0.25rem; transition: transform 0.15s ease; }
+.starBtn:hover { transform: scale(1.2); }
+
+.feedbackSuccess {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+  text-align: center;
+}
+
+.checkCircle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(201,242,143,0.08);
+  border: 2px solid rgba(201,242,143,0.3);
+  color: #c9f28f;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feedbackThank { font-size: 1.75rem; font-weight: 800; color: #fff; margin: 0; }
+.feedbackSub { color: #6b7280; margin: 0; }
+
+@media (max-width: 768px) {
+  .page { padding: 1.5rem; }
+  .greetTitle { font-size: 1.75rem; }
+  .eventDetailTitle { font-size: 1.75rem; }
+  .clubName { font-size: 1.75rem; }
+  .eventsGrid, .clubsGrid { grid-template-columns: 1fr; }
+}

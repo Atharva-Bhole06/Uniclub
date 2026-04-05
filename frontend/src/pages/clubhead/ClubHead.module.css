@@ -1,0 +1,278 @@
+/* ════════════════════════════════════
+   Club Head Shared Styles
+   ════════════════════════════════════ */
+
+.page {
+  padding: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section { margin-bottom: 2.5rem; }
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ── Actions ─────────────────────────────────────── */
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fff;
+  color: #050505;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.primaryAction:hover { background: #e5e7eb; transform: translateY(-1px); }
+
+/* ── Summary Cards ────────────────────────────────── */
+.summaryRow {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.summaryCard {
+  flex: 1;
+  min-width: 160px;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.summaryCard:hover { border-color: rgba(201,242,143,0.2); background: #161616; }
+
+.summaryIcon { color: #c9f28f; }
+.summaryNum { font-size: 2.5rem; font-weight: 800; color: #fff; line-height: 1; }
+.summaryLabel { font-size: 0.82rem; color: #6b7280; }
+
+/* ── Event Table ─────────────────────────────────── */
+.eventTable {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 0.85rem 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tableRow:last-child { border-bottom: none; }
+.tableRow:hover { background: rgba(255,255,255,0.02); }
+
+.eventName { font-size: 0.9rem; font-weight: 600; color: #fff; }
+.eventDate { font-size: 0.85rem; color: #9ca3af; }
+.eventRegs { font-size: 0.85rem; color: #9ca3af; }
+
+/* ── Manage List ─────────────────────────────────── */
+.manageList { display: flex; flex-direction: column; gap: 1rem; }
+
+.manageRow {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.manageRow:hover { border-color: rgba(255,255,255,0.12); }
+
+.manageImg {
+  width: 80px; height: 56px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.manageImg img { width: 100%; height: 100%; object-fit: cover; }
+
+.manageInfo { flex: 1; }
+.manageTitle { font-size: 0.95rem; font-weight: 700; color: #fff; margin: 0 0 0.25rem; }
+.manageMeta { font-size: 0.8rem; color: #6b7280; margin: 0; }
+
+.manageActions { display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+.rejectReason { font-size: 0.75rem; color: #fca5a5; max-width: 200px; text-align: right; }
+
+/* ── Forms ────────────────────────────────────────── */
+.formCard {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 2.5rem;
+  max-width: 800px;
+}
+
+.form { display: flex; flex-direction: column; gap: 1.25rem; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+
+.formNote {
+  background: rgba(245,158,11,0.07);
+  border: 1px solid rgba(245,158,11,0.2);
+  color: #fcd34d;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+}
+
+.formActions { display: flex; gap: 1rem; justify-content: flex-end; }
+
+.apiError {
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.2);
+  color: #fca5a5;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Volunteers ─────────────────────────────────── */
+.addVolunteerForm { margin-bottom: 2rem; }
+
+.inlineForm {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  max-width: 500px;
+}
+
+.inlineForm > :first-child { flex: 1; }
+
+.volunteerList { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.volunteerRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 0.85rem 1.25rem;
+}
+
+.memberAvatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(201,242,143,0.08);
+  border: 1px solid rgba(201,242,143,0.2);
+  color: #c9f28f;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.volunteerInfo { flex: 1; }
+.volunteerName { font-size: 0.9rem; font-weight: 600; color: #fff; margin: 0; }
+.volunteerEmail { font-size: 0.78rem; color: #6b7280; margin: 0; }
+
+.removeBtn {
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.2);
+  color: #ef4444;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.removeBtn:hover { background: rgba(239,68,68,0.2); }
+
+/* ── Announcements ──────────────────────────────── */
+.announcementLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.composeCard {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.composeTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 1.5rem;
+}
+
+.emailNote {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.announcementHistory {
+  display: flex;
+  flex-direction: column;
+}
+
+.announcementList { display: flex; flex-direction: column; gap: 0.75rem; overflow-y: auto; }
+
+.announcementItem {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+}
+
+.announcementSubject { font-size: 0.9rem; font-weight: 700; color: #fff; margin: 0 0 0.35rem; }
+.announcementMsg { font-size: 0.82rem; color: #9ca3af; margin: 0 0 0.5rem; white-space: pre-line; }
+.announcementTime { font-size: 0.72rem; color: #4b5563; }
+
+@media (max-width: 1024px) {
+  .announcementLayout { grid-template-columns: 1fr; }
+  .row2 { grid-template-columns: 1fr; }
+  .tableHeader, .tableRow { grid-template-columns: 2fr 1fr 1fr; }
+  .tableRow > :nth-child(3) { display: none; }
+}
+
+@media (max-width: 768px) {
+  .page { padding: 1.5rem; }
+}

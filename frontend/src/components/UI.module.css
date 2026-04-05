@@ -1,0 +1,113 @@
+/* ── Spinner ──────────────────────────────────────────────── */
+.spinnerWrap {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 4rem;
+  gap: 1rem;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: #c9f28f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinnerText { color: #6b7280; font-size: 0.9rem; }
+
+/* ── Empty State ──────────────────────────────────────────── */
+.emptyState {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 5rem 2rem; gap: 1rem;
+}
+.emptyIcon { color: #374151; }
+.emptyTitle { font-size: 1.25rem; font-weight: 700; color: #fff; margin: 0; }
+.emptyDesc { color: #6b7280; font-size: 0.9rem; margin: 0; max-width: 360px; }
+
+/* ── Page Header ──────────────────────────────────────────── */
+.pageHeader {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; margin-bottom: 2.5rem;
+  flex-wrap: wrap; gap: 1rem;
+}
+.pageTitle {
+  font-size: 2rem; font-weight: 800;
+  color: #fff; margin: 0; letter-spacing: -0.03em;
+}
+.pageSubtitle { color: #9ca3af; font-size: 0.95rem; margin: 0.35rem 0 0; }
+.pageAction { flex-shrink: 0; }
+
+/* ── Form ─────────────────────────────────────────────────── */
+.formGroup { display: flex; flex-direction: column; gap: 0.4rem; }
+.label { font-size: 0.82rem; font-weight: 600; color: #d1d5db; }
+
+.input {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  width: 100%;
+  transition: border-color 0.2s ease;
+  outline: none;
+}
+.input:focus { border-color: rgba(201,242,143,0.4); }
+.input::placeholder { color: #4b5563; }
+.inputError { border-color: rgba(239,68,68,0.5) !important; }
+.textarea { min-height: 120px; resize: vertical; }
+.errorMsg { font-size: 0.78rem; color: #ef4444; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 0.85rem 1.75rem;
+  border-radius: 12px; font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s ease;
+  border: none; font-family: inherit;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn_primary {
+  background: #fff; color: #050505;
+}
+.btn_primary:hover:not(:disabled) { background: #e5e7eb; transform: translateY(-1px); }
+
+.btn_secondary {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+}
+.btn_secondary:hover:not(:disabled) { background: rgba(255,255,255,0.12); }
+
+.btn_accent {
+  background: rgba(201,242,143,0.12);
+  border: 1px solid rgba(201,242,143,0.3);
+  color: #c9f28f;
+}
+.btn_accent:hover:not(:disabled) { background: rgba(201,242,143,0.2); }
+
+.btn_danger {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #ef4444;
+}
+.btn_danger:hover:not(:disabled) { background: rgba(239,68,68,0.2); }
+
+.btnSpinner {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #050505;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── Badge ────────────────────────────────────────────────── */
+.badge {
+  font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.25rem 0.7rem; border-radius: 100px;
+  border: 1px solid; background: rgba(0,0,0,0.3);
+}
