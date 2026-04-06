@@ -11,7 +11,7 @@ import StudentDashboard from './pages/student/StudentDashboard';
 import ExploreClubs from './pages/student/ExploreClubs';
 import ClubDetail from './pages/student/ClubDetail';
 import ExploreEvents from './pages/student/ExploreEvents';
-import EventDetail from './pages/student/EventDetail';
+import EventDetails from './pages/student/EventDetails';
 import MyEvents from './pages/student/MyEvents';
 import FeedbackPage from './pages/student/FeedbackPage';
 
@@ -63,7 +63,7 @@ function AppRoutes() {
       <Route path="/student/clubs" element={<RequireAuth role="STUDENT"><ExploreClubs /></RequireAuth>} />
       <Route path="/student/clubs/:id" element={<RequireAuth role="STUDENT"><ClubDetail /></RequireAuth>} />
       <Route path="/student/events" element={<RequireAuth role="STUDENT"><ExploreEvents /></RequireAuth>} />
-      <Route path="/student/events/:id" element={<RequireAuth role="STUDENT"><EventDetail /></RequireAuth>} />
+      <Route path="/event/:id" element={<RequireAuth role="STUDENT"><EventDetails /></RequireAuth>} />
       <Route path="/student/my-events" element={<RequireAuth role="STUDENT"><MyEvents /></RequireAuth>} />
       <Route path="/student/feedback/:eventId" element={<RequireAuth role="STUDENT"><FeedbackPage /></RequireAuth>} />
 

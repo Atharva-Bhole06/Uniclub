@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApi } from '../../hooks/useApi';
-import { eventsAPI } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
 import { LoadingSpinner, EmptyState, PageHeader, StatusBadge } from '../../components/UI';
@@ -10,7 +8,28 @@ import styles from './Student.module.css';
 
 export default function MyEvents() {
   const navigate = useNavigate();
-  const { data: events, loading, error } = useApi(() => eventsAPI.getRegistered());
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRegistered = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const res = await fetch(`http://localhost:8080/api/student/my-events?userId=${userId}`);
+        if (!res.ok) {
+           setEvents([]);
+           return;
+        }
+        const data = await res.json();
+        setEvents(data || []);
+      } catch (err) {
+        setEvents([]); // Fallback to empty instead of crashing
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchRegistered();
+  }, []);
 
   const now = new Date();
   const upcoming = events?.filter(e => new Date(e.startTime) > now) || [];

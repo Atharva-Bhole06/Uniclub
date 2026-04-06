@@ -3,6 +3,9 @@ package com.uniclub.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -20,4 +23,8 @@ public class User {
     private String year;
     private String mobile;
     private String moodleId;
+
+    @OneToMany(mappedBy = "student")
+    @JsonIgnore
+    private List<Registration> registrations;
 }

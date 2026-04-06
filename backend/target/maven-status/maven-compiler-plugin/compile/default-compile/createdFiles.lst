@@ -1,0 +1,12 @@
+com\uniclub\backend\config\SecurityConfig.class
+com\uniclub\backend\dto\LoginRequest.class
+com\uniclub\backend\entity\User.class
+com\uniclub\backend\service\UserService.class
+com\uniclub\backend\controller\AuthController.class
+com\uniclub\backend\BackendApplication.class
+com\uniclub\backend\dto\UserResponse.class
+com\uniclub\backend\dto\ApiResponse.class
+com\uniclub\backend\dto\VerifyOtpRequest.class
+com\uniclub\backend\repository\UserRepository.class
+com\uniclub\backend\controller\UserController.class
+com\uniclub\backend\dto\RegisterRequest.class

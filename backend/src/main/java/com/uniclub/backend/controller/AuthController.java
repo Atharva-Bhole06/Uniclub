@@ -2,6 +2,7 @@ package com.uniclub.backend.controller;
 
 import com.uniclub.backend.dto.*;
 import com.uniclub.backend.entity.User;
+import com.uniclub.backend.repository.UserRepository;
 import com.uniclub.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> register(@RequestBody RegisterRequest req) {
@@ -31,11 +35,13 @@ public class AuthController {
             if (userService.existsByEmail(req.getEmail()))
                 return badRequest("Email already exists");
 
+            System.out.println("ROLE RECEIVED: " + req.getRole());
+
             User user = new User();
             user.setFullName(req.getName());
             user.setEmail(req.getEmail());
             user.setPassword(req.getPassword());
-            user.setRole(req.getRole() != null ? req.getRole() : "STUDENT");
+            user.setRole(req.getRole() != null && !req.getRole().isBlank() ? req.getRole() : "STUDENT");
 
             User saved = userService.register(user);
 
@@ -113,9 +119,37 @@ public class AuthController {
                         .body(ApiResponse.error("No token provided"));
             }
 
-            // TEMP: dummy user logic (since we use placeholder tokens)
-            UserResponse user = new UserResponse(1, "Demo User", "demo@uniclub.com", "STUDENT");
-            return ResponseEntity.ok(ApiResponse.ok("User fetched", user));
+            // Parse dev token format: "dev-token-{userId}"
+            String token = authHeader.substring(7); // strip "Bearer "
+            if (!token.startsWith("dev-token-")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(ApiResponse.error("Invalid token format"));
+            }
+
+            String idStr = token.substring("dev-token-".length());
+            int userId;
+            try {
+                userId = Integer.parseInt(idStr);
+            } catch (NumberFormatException ex) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(ApiResponse.error("Malformed token"));
+            }
+
+            User user = userRepository.findById(userId).orElse(null);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(ApiResponse.error("User not found"));
+            }
+
+            System.out.println("/me => userId=" + userId + " role=" + user.getRole());
+
+            UserResponse userRes = new UserResponse(
+                    user.getId(),
+                    user.getFullName(),
+                    user.getEmail(),
+                    user.getRole()
+            );
+            return ResponseEntity.ok(ApiResponse.ok("User fetched", userRes));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

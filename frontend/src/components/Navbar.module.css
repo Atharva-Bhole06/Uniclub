@@ -5,11 +5,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2.5rem;
-  background: rgba(5, 5, 5, 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 1rem 3rem;
+  background: rgba(5, 5, 5, 0.45); /* Lowered opacity for stronger glass */
+  backdrop-filter: blur(32px);    /* Doubled blur effect */
+  -webkit-backdrop-filter: blur(32px);
   height: 64px;
 }
 
@@ -27,7 +26,7 @@
 }
 
 .logoText {
-  font-size: 1.15rem;
+  font-size: 1.35rem; /* Increased font size */
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.02em;
@@ -43,8 +42,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  border: none;
   color: #fff;
   display: flex;
   align-items: center;
@@ -54,7 +53,7 @@
 }
 
 .iconBtn:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.08); /* slight highlight */
 }
 
 .userPill {
@@ -64,13 +63,13 @@
 }
 
 .userName {
-  font-size: 0.9rem;
+  font-size: 1.05rem; /* Increased from 0.9rem */
   font-weight: 600;
   color: #fff;
 }
 
 .roleBadge {
-  font-size: 0.7rem;
+  font-size: 0.8rem; /* Increased from 0.7rem */
   color: #c9f28f;
   font-weight: 500;
   text-transform: uppercase;

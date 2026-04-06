@@ -1,0 +1,12 @@
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\BackendApplication.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\config\SecurityConfig.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\controller\AuthController.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\controller\UserController.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\dto\ApiResponse.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\dto\LoginRequest.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\dto\RegisterRequest.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\dto\UserResponse.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\dto\VerifyOtpRequest.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\entity\User.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\repository\UserRepository.java
+D:\Atharva\JavaProject\Uniclub\backend\src\main\java\com\uniclub\backend\service\UserService.java

@@ -1,0 +1,39 @@
+.greetingContainer {
+  padding: 0 0 2rem 0; /* Purely bottom spacing, no top spacing */
+  background: transparent;
+  width: 100%;
+}
+
+.greetingText {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.welcomeText {
+  color: var(--text-primary);
+}
+
+.accentName {
+  color: #c9f28f; /* Acquire green */
+  font-family: 'Playfair Display', serif;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin-top: 0.75rem;
+  font-size: 1.1rem;
+  color: var(--text-muted, #9ca3af);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px) {
+  .greetingContainer {
+    padding: 0 0 1.5rem 0;
+  }
+}

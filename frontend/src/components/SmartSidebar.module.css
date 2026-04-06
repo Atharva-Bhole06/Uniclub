@@ -1,0 +1,81 @@
+.sidebarWrapper {
+  position: fixed;
+  left: 0;
+  top: 64px; /* below navbar */
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 90; /* High z-index so it overlays content on hover */
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* Fully connected blocks */
+}
+
+.blockItem {
+  display: flex;
+  flex-direction: row; /* Horizontal flex by default, just clipped width */
+  align-items: center;
+  width: 64px; /* Default sidebar width */
+  height: 110px; /* Taller rectangular block */
+  background: #c9f28f; /* SOLID acquire green for all blocks */
+  color: #050505;
+  text-decoration: none;
+  overflow: hidden; /* Clips text when collapsed */
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animate width ONLY */
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15); /* Thin dark divider */
+}
+
+.blockItem:hover {
+  width: 240px; /* Expands to the right only */
+}
+
+.iconWrapper {
+  width: 64px; /* Same as the collapsed width */
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  padding-left: 0.5rem;
+}
+
+.blockItem:hover .textWrapper {
+  opacity: 1; /* Fade in text smoothly */
+  transition-delay: 0.1s;
+}
+
+.label {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: #050505;
+  margin: 0;
+}
+
+.desc {
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 500;
+  margin-top: 0.15rem;
+}
+
+/* Hide on smaller screens */
+@media (max-width: 1024px) {
+  .sidebarWrapper {
+    display: none;
+  }
+}

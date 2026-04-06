@@ -30,6 +30,7 @@ export function AuthProvider({ children }) {
     const res = await authAPI.login(credentials);
     const { token: jwt, user: userData } = res.data.data;
     localStorage.setItem('token', jwt);
+    localStorage.setItem('userId', userData.id);
     setToken(jwt);
     setUser(userData);
     setRole(userData.role);
@@ -38,6 +39,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     setToken(null);
     setUser(null);
     setRole(null);

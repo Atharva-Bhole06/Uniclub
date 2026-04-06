@@ -62,10 +62,8 @@ export default function ExploreClubs() {
           </div>
         </div>
 
-        {loading ? <LoadingSpinner /> : error ? (
-          <EmptyState icon={Compass} title="Failed to load clubs" description={error} />
-        ) : filtered.length === 0 ? (
-          <EmptyState icon={Compass} title="No clubs found" description="Try a different filter or search term" />
+        {loading ? <LoadingSpinner /> : (error || filtered.length === 0) ? (
+          <EmptyState icon={Compass} title="No clubs available right now" description="Check back later for new clubs!" />
         ) : (
           <motion.div
             className={styles.clubsGrid}
