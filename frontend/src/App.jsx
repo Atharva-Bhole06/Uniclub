@@ -21,6 +21,8 @@ import ManageEvents from './pages/clubhead/ManageEvents';
 import Volunteers from './pages/clubhead/Volunteers';
 import Announcements from './pages/clubhead/Announcements';
 
+import FacultyDashboard from './pages/faculty/FacultyDashboard';
+import CreateClub from './pages/faculty/CreateClub';
 import EventApproval from './pages/faculty/EventApproval';
 import AttendanceMonitor from './pages/faculty/AttendanceMonitor';
 
@@ -75,7 +77,8 @@ function AppRoutes() {
       <Route path="/clubhead/announcements" element={<RequireAuth role="CLUB_HEAD"><Announcements /></RequireAuth>} />
 
       {/* Faculty */}
-      <Route path="/faculty/dashboard" element={<RequireAuth role="FACULTY"><EventApproval /></RequireAuth>} />
+      <Route path="/faculty/dashboard" element={<RequireAuth role="FACULTY"><FacultyDashboard /></RequireAuth>} />
+      <Route path="/faculty/create-club" element={<RequireAuth role="FACULTY"><CreateClub /></RequireAuth>} />
       <Route path="/faculty/approvals" element={<RequireAuth role="FACULTY"><EventApproval /></RequireAuth>} />
       <Route path="/faculty/attendance" element={<RequireAuth role="FACULTY"><AttendanceMonitor /></RequireAuth>} />
 

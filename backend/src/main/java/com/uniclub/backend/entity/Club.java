@@ -20,4 +20,12 @@ public class Club {
     @OneToMany(mappedBy = "club")
     @JsonIgnore
     private List<Event> events;
+
+    @ManyToOne
+    @JoinColumn(name = "head_id", referencedColumnName = "id")
+    private User head;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private User faculty;
 }

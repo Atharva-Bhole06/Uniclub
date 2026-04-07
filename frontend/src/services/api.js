@@ -19,7 +19,8 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const originalRequest = err.config;
+    if (err.response?.status === 401 && originalRequest.url !== '/auth/login') {
       localStorage.clear();
       window.location.href = '/login';
     }
@@ -94,6 +95,17 @@ export const volunteersAPI = {
   add: (clubId, userId) => api.post(`/clubs/${clubId}/volunteers`, { userId }),
   remove: (clubId, userId) => api.delete(`/clubs/${clubId}/volunteers/${userId}`),
   getAll: (clubId) => api.get(`/clubs/${clubId}/volunteers`),
+};
+
+// ─── FACULTY ──────────────────────────────────────────────────────────────────
+export const facultyAPI = {
+  createClubWithHead: (data) => api.post('/faculty/create-club-with-head', data),
+  getMyClubs: () => api.get('/faculty/my-clubs'),
+};
+
+// ─── USERS ────────────────────────────────────────────────────────────────────
+export const usersAPI = {
+  getStudents: () => api.get('/users/students'),
 };
 
 export default api;

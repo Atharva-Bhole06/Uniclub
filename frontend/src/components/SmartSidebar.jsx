@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard, Compass, Calendar, Star, MessageSquare,
-  ClipboardList, Users, Megaphone, CheckSquare, BarChart2
+  ClipboardList, Users, Megaphone, CheckSquare, BarChart2, PlusCircle
 } from 'lucide-react';
 import styles from './SmartSidebar.module.css';
 
@@ -25,6 +25,7 @@ const HEAD_LINKS = [
 
 const FACULTY_LINKS = [
   { to: '/faculty/dashboard',   icon: LayoutDashboard, label: 'Dashboard', desc: 'Faculty overview' },
+  { to: '/faculty/create-club', icon: PlusCircle,      label: 'Create Club',desc: 'Start new club' },
   { to: '/faculty/approvals',   icon: CheckSquare,     label: 'Approvals', desc: 'Pending events' },
   { to: '/faculty/attendance',  icon: BarChart2,       label: 'Attendance',desc: 'Monitor stats' },
 ];

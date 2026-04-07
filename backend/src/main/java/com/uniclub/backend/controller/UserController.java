@@ -19,4 +19,12 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping("/students")
+    public List<User> getStudents() {
+        java.util.List<User> users = new java.util.ArrayList<>();
+        users.addAll(userService.getUsersByRole(com.uniclub.backend.entity.Role.STUDENT));
+        users.addAll(userService.getUsersByRole(com.uniclub.backend.entity.Role.CLUB_HEAD));
+        return users;
+    }
 }

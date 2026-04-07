@@ -5,13 +5,14 @@ import com.uniclub.backend.entity.User;
 import com.uniclub.backend.repository.UserRepository;
 import com.uniclub.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}) // ✅ Supported multiple ports
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     @Autowired
@@ -19,6 +20,9 @@ public class AuthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> register(@RequestBody RegisterRequest req) {
@@ -31,29 +35,64 @@ public class AuthController {
 
             if (req.getPassword() == null || req.getPassword().length() < 6)
                 return badRequest("Password must be at least 6 characters");
+                
+            if (req.getConfirmPassword() == null || !req.getPassword().equals(req.getConfirmPassword()))
+                return badRequest("Passwords do not match");
 
-            if (userService.existsByEmail(req.getEmail()))
-                return badRequest("Email already exists");
+            String requestRole = req.getRole() != null && !req.getRole().isBlank() ? req.getRole().toUpperCase() : "STUDENT";
+            User existingUser = userService.findByEmail(req.getEmail()).orElse(null);
 
-            System.out.println("ROLE RECEIVED: " + req.getRole());
+            if ("FACULTY".equals(requestRole)) {
+                boolean emailExistsInDB = existingUser != null;
+                if (!emailExistsInDB) {
+                    throw new RuntimeException("Faculty not authorized");
+                }
+                
+                existingUser.setPassword(passwordEncoder.encode(req.getPassword()));
+                if (req.getName() != null && !req.getName().isBlank()) {
+                    existingUser.setFullName(req.getName());
+                }
+                User saved = userService.register(existingUser);
+                UserResponse response = new UserResponse(saved.getId(), saved.getFullName(), saved.getEmail(), saved.getRole());
+                return ResponseEntity.ok(ApiResponse.ok("Faculty registration successful", response));
+            } else if ("STUDENT".equals(requestRole)) {
+                if (existingUser != null) {
+                    return badRequest("Email already exists");
+                }
+                
+                if (req.getMoodleId() == null || req.getMoodleId().isBlank()) {
+                    return badRequest("Moodle ID is required");
+                }
+                if (req.getDepartment() == null || req.getDepartment().isBlank()) {
+                    return badRequest("Department is required");
+                }
+                if (req.getYear() == null || req.getYear().isBlank()) {
+                    return badRequest("Year is required");
+                }
 
-            User user = new User();
-            user.setFullName(req.getName());
-            user.setEmail(req.getEmail());
-            user.setPassword(req.getPassword());
-            user.setRole(req.getRole() != null && !req.getRole().isBlank() ? req.getRole() : "STUDENT");
+                User user = new User();
+                user.setFullName(req.getName());
+                user.setEmail(req.getEmail());
+                user.setPassword(passwordEncoder.encode(req.getPassword()));
+                user.setRole(com.uniclub.backend.entity.Role.valueOf(requestRole));
+                user.setMoodleId(req.getMoodleId());
+                user.setDepartment(req.getDepartment());
+                user.setYear(req.getYear());
 
-            User saved = userService.register(user);
+                User saved = userService.register(user);
 
-            UserResponse response = new UserResponse(
-                    saved.getId(),
-                    saved.getFullName(),
-                    saved.getEmail(),
-                    saved.getRole()
-            );
+                UserResponse response = new UserResponse(
+                        saved.getId(),
+                        saved.getFullName(),
+                        saved.getEmail(),
+                        saved.getRole()
+                );
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.ok("Registration successful", response));
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(ApiResponse.ok("Registration successful", response));
+            }
+            
+            return badRequest("Invalid role selected.");
 
         } catch (Exception e) {
             return serverError("Registration failed: " + e.getMessage());
@@ -81,7 +120,7 @@ public class AuthController {
 
             if (user == null) {
                 // Temporary debug details for the user
-                User checkUser = userService.findByEmail(req.getEmail());
+                User checkUser = userService.findByEmail(req.getEmail()).orElse(null);
                 if (checkUser == null) {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                             .body(ApiResponse.error("Invalid credentials: User not found for email " + req.getEmail()));
@@ -107,7 +146,8 @@ public class AuthController {
             return ResponseEntity.ok(ApiResponse.ok("Login successful", payload));
 
         } catch (Exception e) {
-            return serverError("Login failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error(e.getMessage()));
         }
     }
 

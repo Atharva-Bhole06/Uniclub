@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // ─── Register ─────────────────────────────
     public User register(User user) {
@@ -20,18 +24,26 @@ public class UserService {
 
     // ─── Login ────────────────────────────────
     public User login(String email, String password) {
-        System.out.println("Login intent for email: " + email);
-        User user = userRepo.findByEmail(email);
-        if (user == null) {
-            System.out.println("User not found for email: " + email);
-            return null;
+        System.out.println("LOGIN ATTEMPT: " + email);
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("USER FOUND: " + user);
+        
+        System.out.println("RAW PASSWORD: " + password);
+        System.out.println("DB PASSWORD: " + user.getPassword());
+        
+        if (user.getRole() == com.uniclub.backend.entity.Role.FACULTY && user.getPassword() == null) {
+            throw new RuntimeException("Please set your password first");
         }
-        boolean matches = user.getPassword().equals(password);
-        System.out.println("Password match for " + email + ": " + matches);
-        if (matches) {
-            return user;
+
+        if (user.getPassword() == null) {
+            throw new RuntimeException("Password not set for user");
         }
-        return null;
+        
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        
+        return user;
     }
 
     // ─── Check Email Exists ───────────────────
@@ -40,12 +52,17 @@ public class UserService {
     }
 
     // ─── Find by Email ───────────────────────
-    public User findByEmail(String email) {
+    public java.util.Optional<User> findByEmail(String email) {
         return userRepo.findByEmail(email);
     }
 
     // ─── Get All Users (FIX ADDED) ✅
     public List<User> getAllUsers() {
         return userRepo.findAll();
+    }
+
+    // ─── Get Users by Role ───────────────────
+    public List<User> getUsersByRole(com.uniclub.backend.entity.Role role) {
+        return userRepo.findByRole(role);
     }
 }

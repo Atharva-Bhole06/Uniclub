@@ -36,11 +36,17 @@ export default function LoginPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.logoRow}>
-          <img src="/images/logo.png" alt="UniClub" className={styles.logo} />
-          <span className={styles.logoText}>UniClub</span>
+      <nav className={styles.navbar}>
+        <div className={styles.navLogo} onClick={() => navigate('/')}>
+          <img src="/images/logo.png" alt="UniClub Logo" className={styles.navLogoImg} />
+          UniClub
         </div>
+        <div>
+          <button className="btn-primary" onClick={() => navigate('/')}>Home</button>
+        </div>
+      </nav>
+
+      <div className={styles.card}>
         <h1 className={styles.heading}>Welcome back</h1>
         <p className={styles.sub}>Sign in to your account to continue</p>
 

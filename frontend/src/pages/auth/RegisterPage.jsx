@@ -6,15 +6,34 @@ import styles from './Auth.module.css';
 
 const STEPS = { DETAILS: 'DETAILS', OTP: 'OTP', DONE: 'DONE' };
 const ROLE_OPTIONS = [
-  { value: 'STUDENT',   label: '🎓 Student' },
-  { value: 'CLUB_HEAD', label: '👑 Club Head' },
-  { value: 'FACULTY',   label: '👨‍🏫 Faculty' },
+  { value: 'STUDENT', label: 'Student' },
+  { value: 'FACULTY', label: 'Faculty' },
+];
+
+const DEPT_OPTIONS = [
+  { value: '', label: 'Select Department' },
+  { value: 'CS', label: 'CS' },
+  { value: 'IT', label: 'IT' },
+  { value: 'AIML', label: 'AIML' },
+  { value: 'AIDS', label: 'AIDS' },
+  { value: 'Others', label: 'Others' }
+];
+
+const YEAR_OPTIONS = [
+  { value: '', label: 'Select Year' },
+  { value: 'FE', label: 'FE' },
+  { value: 'SE', label: 'SE' },
+  { value: 'TE', label: 'TE' },
+  { value: 'BE', label: 'BE' }
 ];
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(STEPS.DETAILS);
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: '' });
+  const [form, setForm] = useState({ 
+    name: '', email: '', password: '', confirmPassword: '', 
+    role: 'STUDENT', moodleId: '', department: '', year: '' 
+  });
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,12 +42,21 @@ export default function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
     setError('');
     setLoading(true);
     try {
       console.log("Register payload:", form);
       await authAPI.register(form);
-      setStep(STEPS.OTP);
+      if (form.role === 'FACULTY') {
+        setStep(STEPS.DONE);
+        setTimeout(() => navigate('/login'), 2000);
+      } else {
+        setStep(STEPS.OTP);
+      }
     } catch (err) {
       setError(err?.response?.data?.message || 'Registration failed');
     } finally {
@@ -54,11 +82,17 @@ export default function RegisterPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.card}>
-        <div className={styles.logoRow}>
-          <img src="/images/logo.png" alt="UniClub" className={styles.logo} />
-          <span className={styles.logoText}>UniClub</span>
+      <nav className={styles.navbar}>
+        <div className={styles.navLogo} onClick={() => navigate('/')}>
+          <img src="/images/logo.png" alt="UniClub Logo" className={styles.navLogoImg} />
+          UniClub
         </div>
+        <div>
+          <button className="btn-primary" onClick={() => navigate('/')}>Home</button>
+        </div>
+      </nav>
+
+      <div className={styles.card}>
 
         {step === STEPS.DETAILS && (
           <>
@@ -66,10 +100,22 @@ export default function RegisterPage() {
             <p className={styles.sub}>Join UniClub and discover your campus</p>
             {error && <div className={styles.errorBanner}>{error}</div>}
             <form onSubmit={handleRegister} className={styles.form}>
+              <FormSelect label="Select Role" name="role" options={ROLE_OPTIONS} value={form.role} onChange={handleChange} required />
+              
               <FormInput label="Full name" name="name" placeholder="Jane Smith" value={form.name} onChange={handleChange} required />
-              <FormInput label="College email" name="email" type="email" placeholder="you@college.edu" value={form.email} onChange={handleChange} required />
-              <FormInput label="Password" name="password" type="password" placeholder="Min 8 characters" value={form.password} onChange={handleChange} required minLength={8} />
-              <FormSelect label="I am a..." name="role" options={ROLE_OPTIONS} value={form.role} onChange={handleChange} required />
+              <FormInput label={form.role === 'FACULTY' ? "Email" : "College email"} name="email" type="email" placeholder={form.role === 'FACULTY' ? "you@college.edu" : "student@college.edu"} value={form.email} onChange={handleChange} required />
+              
+              {form.role === 'STUDENT' && (
+                <>
+                  <FormInput label="Moodle ID" name="moodleId" placeholder="12345678" value={form.moodleId} onChange={handleChange} required />
+                  <FormSelect label="Department" name="department" options={DEPT_OPTIONS} value={form.department} onChange={handleChange} required />
+                  <FormSelect label="Year" name="year" options={YEAR_OPTIONS} value={form.year} onChange={handleChange} required />
+                </>
+              )}
+
+              <FormInput label="Password" name="password" type="password" placeholder="Min 6 characters" value={form.password} onChange={handleChange} required minLength={6} />
+              <FormInput label="Re-enter Password" name="confirmPassword" type="password" placeholder="Min 6 characters" value={form.confirmPassword} onChange={handleChange} required minLength={6} />
+              
               <Button type="submit" variant="primary" loading={loading} style={{ width: '100%', marginTop: '0.5rem' }}>
                 Continue
               </Button>
