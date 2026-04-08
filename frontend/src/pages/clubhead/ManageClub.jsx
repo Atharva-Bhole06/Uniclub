@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { headClubAPI } from '../../services/api';
+import { headClubAPI, API_BASE } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import { LoadingSpinner, PageHeader } from '../../components/UI';
 import { Save, Globe, CheckCircle } from 'lucide-react';
 import styles from './ClubHead.module.css';
 
-const BACKEND = 'http://localhost:8080';
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } };
 
 export default function ManageClub() {
@@ -28,7 +27,7 @@ export default function ManageClub() {
         setDescription(c.description || '');
         setWebsite(c.websiteLink || '');
         if (c.posterUrl) {
-          setPosterPreview(`${BACKEND}/${c.posterUrl}`);
+          setPosterPreview(`${API_BASE}/${c.posterUrl}`);
         }
       })
       .catch((err) => {
@@ -60,7 +59,7 @@ export default function ManageClub() {
       if (selectedFile) {
         const uploadRes = await headClubAPI.uploadPoster(club.id, selectedFile);
         const newUrl = uploadRes.data.posterUrl;
-        setPosterPreview(`${BACKEND}/${newUrl}`);
+        setPosterPreview(`${API_BASE}/${newUrl}`);
         setSelectedFile(null);
         setClub(prev => ({ ...prev, posterUrl: newUrl }));
       }

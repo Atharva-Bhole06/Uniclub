@@ -4,7 +4,7 @@ import AppLayout from '../../components/AppLayout';
 import { PageHeader, LoadingSpinner } from '../../components/UI';
 import ClubCard from '../../components/ClubCard';
 import EventCard from '../../components/EventCard';
-import { clubsAPI, eventsAPI } from '../../services/api';
+import api, { clubsAPI, eventsAPI } from '../../services/api';
 import styles from './ClubHead.module.css';
 
 export default function ClubHeadDashboard() {
@@ -27,9 +27,11 @@ export default function ClubHeadDashboard() {
       setClubs(Array.isArray(clubsRes.data) ? clubsRes.data : []);
 
       // Fetch upcoming events from student API which filters startTime >= now
-      const upRes = await fetch("http://localhost:8080/api/student/events/upcoming");
-      if (upRes.ok) {
-        setUpcomingEvents(await upRes.json());
+      try {
+        const upRes = await api.get("/student/events/upcoming");
+        setUpcomingEvents(upRes.data);
+      } catch (err) {
+        console.error("Failed fetching upcoming events", err);
       }
 
       // Fetch all approved events

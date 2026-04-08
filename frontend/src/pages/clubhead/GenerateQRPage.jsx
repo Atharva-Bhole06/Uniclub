@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import AppLayout from '../../components/AppLayout';
 import { PageHeader, FormInput, Button } from '../../components/UI';
 import { QRCodeSVG } from 'qrcode.react';
-import axios from 'axios';
+import api from '../../services/api';
 
 export default function GenerateQRPage() {
   const { id } = useParams();
@@ -34,7 +34,7 @@ export default function GenerateQRPage() {
     try {
       // Serialize objects as JSON strings so backend can save them simply in List<String>
       const serializedFields = customFields.map(f => JSON.stringify(f));
-      const res = await axios.post(`http://localhost:8080/api/attendance/generate/${id}`, {
+      const res = await api.post(`/attendance/generate/${id}`, {
         customFields: serializedFields
       });
       setSessionData(res.data.data);

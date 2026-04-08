@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, MapPin, Users, Clock, ArrowRight } from 'lucide-react';
 import { getEventStatus } from '../utils/eventUtils';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE } from '../services/api';
 import styles from './EventCard.module.css';
-
-const BACKEND = 'http://localhost:8080';
 
 export default function EventCard({ event, onClick, onSuccess }) {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export default function EventCard({ event, onClick, onSuccess }) {
         <img
           src={
             event.posterUrl
-              ? `${BACKEND}/${event.posterUrl}`
+              ? `${API_BASE}/${event.posterUrl}`
               : event.imageUrl || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=60'
           }
           alt={event.title}

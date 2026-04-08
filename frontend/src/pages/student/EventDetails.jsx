@@ -6,9 +6,8 @@ import { LoadingSpinner } from '../../components/UI';
 import Modal from '../../components/Modal';
 import { useAuth } from '../../context/AuthContext';
 import { getEventStatus } from '../../utils/eventUtils';
+import api, { API_BASE } from '../../services/api';
 import styles from './EventDetails.module.css';
-
-const BACKEND = 'http://localhost:8080';
 
 export default function EventDetails() {
   const { id } = useParams();
@@ -28,12 +27,10 @@ export default function EventDetails() {
 
   const fetchEvent = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/student/event/${id}`);
-      if (!res.ok) throw new Error("Failed to load event details");
-      const data = await res.json();
-      setEvent(data);
+      const res = await api.get(`/student/event/${id}`);
+      setEvent(res.data);
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Failed to load event details");
     } finally {
       setLoading(false);
     }
@@ -117,7 +114,7 @@ export default function EventDetails() {
         <section className={styles.heroSection}>
           <div className={styles.heroImageWrap}>
             <img 
-              src={event.posterUrl ? `${BACKEND}/${event.posterUrl}` : event.imageUrl || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80'} 
+              src={event.posterUrl ? `${API_BASE}/${event.posterUrl}` : event.imageUrl || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&auto=format&fit=crop&q=80'} 
               alt={event.title} 
               className={styles.heroImage} 
             />

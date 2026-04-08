@@ -1,9 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Users, Globe } from 'lucide-react';
+import { API_BASE } from '../services/api';
 import styles from './ClubCard.module.css';
-
-const BACKEND = 'http://localhost:8080';
 
 export default function ClubCard({ club, onJoin, showHeadInfo }) {
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ export default function ClubCard({ club, onJoin, showHeadInfo }) {
         <img
           src={
             club.posterUrl
-              ? `${BACKEND}/${club.posterUrl}`
+              ? `${API_BASE}/${club.posterUrl}`
               : club.imageUrl || '/images/default-club.png'
           }
           alt={club.name}

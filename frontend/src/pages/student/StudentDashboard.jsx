@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
+import api from '../../services/api';
 import styles from './Student.module.css';
 
 const fadeUp = {
@@ -25,21 +26,14 @@ export default function StudentDashboard() {
   const fetchData = async () => {
     try {
       setError(null);
-      const upcomingRes = await fetch("http://localhost:8080/api/student/events/upcoming");
-      const pastRes = await fetch("http://localhost:8080/api/student/events/past");
+      const upcomingRes = await api.get("/student/events/upcoming");
+      const pastRes = await api.get("/student/events/past");
 
-      if (!upcomingRes.ok || !pastRes.ok) {
-        throw new Error("Failed to fetch events");
-      }
-
-      const upcomingData = await upcomingRes.json();
-      const pastData = await pastRes.json();
-
-      setUpcomingEvents(upcomingData);
-      setPastEvents(pastData);
+      setUpcomingEvents(upcomingRes.data);
+      setPastEvents(pastRes.data);
     } catch (err) {
       console.error("Error fetching events:", err);
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Failed to fetch events");
     } finally {
       setLoading(false);
     }
