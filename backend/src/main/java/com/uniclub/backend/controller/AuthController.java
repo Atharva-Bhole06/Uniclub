@@ -24,6 +24,49 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private com.uniclub.backend.repository.OtpVerificationRepository otpRepository;
+
+    @Autowired
+    private org.springframework.mail.javamail.JavaMailSender mailSender;
+
+    @PostMapping("/send-otp")
+    public ResponseEntity<ApiResponse<String>> sendOtp(@RequestBody java.util.Map<String, String> body) {
+        try {
+            String email = body.get("email");
+            if (email == null || email.isBlank()) {
+                return badRequest("Email is required");
+            }
+            if (userService.findByEmail(email).isPresent()) {
+                return badRequest("Email is already registered");
+            }
+
+            // Generate 6 digit OTP
+            String otpCode = String.format("%06d", new java.util.Random().nextInt(999999));
+
+            com.uniclub.backend.entity.OtpVerification otpData = otpRepository.findByEmail(email).orElse(new com.uniclub.backend.entity.OtpVerification());
+            otpData.setEmail(email);
+            otpData.setOtp(otpCode);
+            otpData.setExpiryTime(java.time.LocalDateTime.now().plusMinutes(5));
+            otpData.setVerified(false);
+            otpRepository.save(otpData);
+
+            // Send actual email
+            org.springframework.mail.SimpleMailMessage message = new org.springframework.mail.SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("UniClub OTP Verification");
+            message.setText("Welcome to UniClub!\n\nYour OTP for registration is: " + otpCode + "\n\nThis code will expire in 5 minutes.");
+            mailSender.send(message);
+
+            System.out.println("Actively sent OTP email to: " + email);
+
+            return ResponseEntity.ok(ApiResponse.ok("OTP sent to your email", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return serverError("Failed to send OTP: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<UserResponse>> register(@RequestBody RegisterRequest req) {
         try {
@@ -60,6 +103,12 @@ public class AuthController {
                     return badRequest("Email already exists");
                 }
                 
+                // Enforce OTP verified for student
+                var otpRec = otpRepository.findByEmail(req.getEmail()).orElse(null);
+                if (otpRec == null || !otpRec.isVerified()) {
+                    return badRequest("Email is not verified. Please verify OTP first.");
+                }
+
                 if (req.getMoodleId() == null || req.getMoodleId().isBlank()) {
                     return badRequest("Moodle ID is required");
                 }
@@ -80,6 +129,9 @@ public class AuthController {
                 user.setYear(req.getYear());
 
                 User saved = userService.register(user);
+                
+                // Once registered, delete the OTP record
+                otpRepository.delete(otpRec);
 
                 UserResponse response = new UserResponse(
                         saved.getId(),
@@ -101,12 +153,27 @@ public class AuthController {
 
     @PostMapping("/verify-otp")
     public ResponseEntity<ApiResponse<String>> verifyOtp(@RequestBody VerifyOtpRequest req) {
-        System.out.println("VERIFY OTP HIT");
-        // For now, accept any 6-digit code to unblock frontend development
-        if (req.getOtp() != null && req.getOtp().length() == 6) {
-            return ResponseEntity.ok(ApiResponse.ok("Email verified successfully", null));
+        if (req.getEmail() == null || req.getOtp() == null) {
+            return badRequest("Email and OTP required");
         }
-        return badRequest("Invalid OTP. Please try again.");
+        
+        com.uniclub.backend.entity.OtpVerification otpRec = otpRepository.findByEmail(req.getEmail()).orElse(null);
+        if (otpRec == null) {
+            return badRequest("No OTP request found for this email");
+        }
+        
+        if (otpRec.getExpiryTime().isBefore(java.time.LocalDateTime.now())) {
+            return badRequest("OTP has expired. Please request a new one.");
+        }
+        
+        if (!otpRec.getOtp().equals(req.getOtp())) {
+            return badRequest("Invalid OTP. Please try again.");
+        }
+        
+        otpRec.setVerified(true);
+        otpRepository.save(otpRec);
+        
+        return ResponseEntity.ok(ApiResponse.ok("Email verified successfully", null));
     }
 
     @PostMapping("/login")

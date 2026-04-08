@@ -265,6 +265,184 @@
 .announcementSubject { font-size: 0.9rem; font-weight: 700; color: #fff; margin: 0 0 0.35rem; }
 .announcementMsg { font-size: 0.82rem; color: #9ca3af; margin: 0 0 0.5rem; white-space: pre-line; }
 .announcementTime { font-size: 0.72rem; color: #4b5563; }
+/* ── Club Profile Management ──────────────────────── */
+.clubProfileSection {
+  margin-bottom: 3rem;
+}
+
+.clubNameBig {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.profileFormBox {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.posterSection {
+  width: 100%;
+}
+
+.posterEmptyState {
+  width: 100%;
+  height: 280px;
+  background: rgba(255,255,255,0.03);
+  border: 2px dashed rgba(255,255,255,0.1);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.posterEmptyState:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.addPosterBtn {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addPosterBtn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.posterPreviewContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.posterPreviewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.posterOverlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.posterPreviewContainer:hover .posterOverlay {
+  opacity: 1;
+}
+
+.changePosterBtn {
+  background: #fff;
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.changePosterBtn:hover {
+  transform: translateY(-2px);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.optionalText {
+  color: #6b7280;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.inputField, .textAreaField {
+  width: 100%;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 0.875rem 1.25rem;
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.inputField:focus, .textAreaField:focus {
+  border-color: rgba(201,242,143,0.5);
+}
+
+.textAreaField {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.saveActionBox {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.saveSuccessMsg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #c9f28f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: fadeIn 0.3s ease;
+}
+
+.saveErrorMsg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fca5a5;
+  font-size: 0.85rem;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
 
 @media (max-width: 1024px) {
   .announcementLayout { grid-template-columns: 1fr; }
@@ -275,4 +453,7 @@
 
 @media (max-width: 768px) {
   .page { padding: 1.5rem; }
+  .profileFormBox { padding: 1.5rem; }
+  .posterEmptyState, .posterPreviewContainer { height: 200px; }
+  .clubNameBig { font-size: 2rem; }
 }

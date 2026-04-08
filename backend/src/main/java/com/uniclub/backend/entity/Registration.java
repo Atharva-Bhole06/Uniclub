@@ -1,7 +1,7 @@
 package com.uniclub.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,9 +16,11 @@ public class Registration {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude
     private User student;
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @ToString.Exclude
     private Event event;
 }

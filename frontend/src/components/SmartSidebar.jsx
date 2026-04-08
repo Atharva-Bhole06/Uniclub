@@ -16,11 +16,12 @@ const STUDENT_LINKS = [
 ];
 
 const HEAD_LINKS = [
-  { to: '/clubhead/dashboard',     icon: LayoutDashboard, label: 'Dashboard',   desc: 'Club overview' },
-  { to: '/clubhead/create-event',  icon: Calendar,        label: 'Create',      desc: 'New event' },
-  { to: '/clubhead/events',        icon: ClipboardList,   label: 'Manage',      desc: 'Edit events' },
-  { to: '/clubhead/volunteers',    icon: Users,           label: 'Volunteers',  desc: 'Manage team' },
-  { to: '/clubhead/announcements', icon: Megaphone,       label: 'Broadcast',   desc: 'Send news' },
+  { to: '/clubhead/dashboard',     icon: LayoutDashboard, label: 'Dashboard',       desc: 'Platform overview' },
+  { to: '/clubhead/manage-club',   icon: Compass,         label: 'Manage My Club',  desc: 'Edit club profile' },
+  { to: '/clubhead/events',        icon: Calendar,        label: 'Manage Event',    desc: 'Events & Creation' },
+  { separator: true },
+  { to: '/clubhead/volunteers',    icon: Users,           label: 'Volunteer',       desc: 'Manage team' },
+  { to: '/clubhead/announcements', icon: Megaphone,       label: 'Announcement',    desc: 'Send news' },
 ];
 
 const FACULTY_LINKS = [
@@ -44,24 +45,30 @@ export default function SmartSidebar() {
   return (
     <div className={styles.sidebarWrapper}>
       <nav className={styles.navContainer}>
-        {links.map(({ to, icon: Icon, label, desc }) => (
-          <NavLink
-            key={to}
-            to={to}
-            className={({ isActive }) =>
-              `${styles.blockItem} ${isActive ? styles.activeBlock : ''}`
-            }
-          >
-            <div className={styles.iconWrapper}>
-              <Icon size={20} strokeWidth={2.5} />
-            </div>
-            
-            <div className={styles.textWrapper}>
-              <span className={styles.label}>{label}</span>
-              <span className={styles.desc}>{desc}</span>
-            </div>
-          </NavLink>
-        ))}
+        {links.map((link, idx) => {
+          if (link.separator) {
+            return <div key={`sep-${idx}`} style={{ height: '1px', background: 'rgba(255,255,255,0.1)', margin: '10px 20px' }} />;
+          }
+          const { to, icon: Icon, label, desc } = link;
+          return (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `${styles.blockItem} ${isActive ? styles.activeBlock : ''}`
+              }
+            >
+              <div className={styles.iconWrapper}>
+                <Icon size={20} strokeWidth={2.5} />
+              </div>
+              
+              <div className={styles.textWrapper}>
+                <span className={styles.label}>{label}</span>
+                <span className={styles.desc}>{desc}</span>
+              </div>
+            </NavLink>
+          );
+        })}
       </nav>
     </div>
   );

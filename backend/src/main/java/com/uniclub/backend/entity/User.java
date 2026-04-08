@@ -29,5 +29,6 @@ public class User {
 
     @OneToMany(mappedBy = "student")
     @JsonIgnore
+    @ToString.Exclude
     private List<Registration> registrations;
 }

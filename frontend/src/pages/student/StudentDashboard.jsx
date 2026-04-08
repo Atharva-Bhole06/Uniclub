@@ -77,7 +77,7 @@ export default function StudentDashboard() {
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Upcoming Events ({upcomingEvents.length})</h2>
-            <button className={styles.outlinedBtn} onClick={() => navigate('/student/my-events')}>
+            <button className="viewAllBtn" onClick={() => navigate('/student/events')}>
               View all
             </button>
           </div>

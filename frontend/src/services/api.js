@@ -31,6 +31,7 @@ api.interceptors.response.use(
 // ─── AUTH ────────────────────────────────────────────────────────────────────
 export const authAPI = {
   register: (data) => api.post("/auth/register", data),
+  sendOtp: (data) => api.post("/auth/send-otp", data),
   verifyOtp: (data) => api.post("/auth/verify-otp", data),
   login: (data) => api.post("/auth/login", data),
   getProfile: () => api.get("/auth/me"),
@@ -49,19 +50,11 @@ export const clubsAPI = {
 
 // ─── EVENTS ──────────────────────────────────────────────────────────────────
 export const eventsAPI = {
-  getAll: (params) => api.get('/events', { params }),          // student: approved only
-  getById: (id) => api.get(`/events/${id}`),
-  create: (data) => api.post('/events', data),                 // club head
-  update: (id, data) => api.put(`/events/${id}`, data),
-  delete: (id) => api.delete(`/events/${id}`),
-  approve: (id) => api.put(`/events/${id}/approve`),           // faculty
-  reject: (id, reason) => api.put(`/events/${id}/reject`, { reason }),
-  getPending: () => api.get('/events/pending'),               // faculty view
-  register: (id) => api.post(`/events/${id}/register`),       // student
-  unregister: (id) => api.delete(`/events/${id}/register`),
-  checkClash: (id) => api.get(`/events/${id}/clash-check`),
-  getRegistered: () => api.get('/events/my-registrations'),   // student
-  getParticipants: (id) => api.get(`/events/${id}/participants`),
+  getAll:          (params) => api.get('/events', { params }),
+  getById:         (id)    => api.get(`/events/${id}`),
+  getPending:      ()      => api.get('/faculty/events/pending'),    // faculty
+  approve:         (id)    => api.put(`/faculty/events/${id}/approve`),
+  reject:          (id)    => api.put(`/faculty/events/${id}/reject`),
 };
 
 // ─── ATTENDANCE ──────────────────────────────────────────────────────────────
@@ -106,6 +99,37 @@ export const facultyAPI = {
 // ─── USERS ────────────────────────────────────────────────────────────────────
 export const usersAPI = {
   getStudents: () => api.get('/users/students'),
+};
+
+// ─── HEAD CLUB MANAGEMENT ─────────────────────────────────────────────────────
+export const headClubAPI = {
+  getMyClub: ()       => api.get('/head/my-club'),
+  updateClub: (data)  => api.put('/head/club/update', data),
+  getMyEvents: ()     => api.get('/head/events'),
+  createEvent: (data) => api.post('/head/events', data),
+  getEventRegistrations: (eventId) => api.get(`/head/events/${eventId}/registrations`),
+  uploadPoster: (clubId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('clubId', clubId);
+    return api.post('/head/club/upload-poster', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  uploadEventPoster: (eventId, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('eventId', eventId);
+    return api.post('/head/events/upload-poster', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+};
+
+// ─── STUDENT  ─────────────────────────────────────────────────────────────────
+export const studentAPI = {
+  registerForEvent: (eventId, userId) => api.post(`/student/register/${eventId}?userId=${userId}`),
+  getMyEvents: (userId) => api.get(`/student/my-events?userId=${userId}`),
 };
 
 export default api;

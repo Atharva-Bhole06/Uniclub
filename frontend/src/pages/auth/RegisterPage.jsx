@@ -38,9 +38,19 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [cooldown, setCooldown] = useState(0);
+
+  React.useEffect(() => {
+    let timer;
+    if (cooldown > 0 && step === STEPS.OTP) {
+      timer = setInterval(() => setCooldown(c => c - 1), 1000);
+    }
+    return () => clearInterval(timer);
+  }, [cooldown, step]);
+
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
-  const handleRegister = async (e) => {
+  const handleContinue = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       setError('Passwords do not match');
@@ -49,16 +59,17 @@ export default function RegisterPage() {
     setError('');
     setLoading(true);
     try {
-      console.log("Register payload:", form);
-      await authAPI.register(form);
       if (form.role === 'FACULTY') {
+        await authAPI.register(form);
         setStep(STEPS.DONE);
         setTimeout(() => navigate('/login'), 2000);
       } else {
+        await authAPI.sendOtp({ email: form.email });
         setStep(STEPS.OTP);
+        setCooldown(30);
       }
     } catch (err) {
-      setError(err?.response?.data?.message || 'Registration failed');
+      setError(err?.response?.data?.message || 'Error occurred');
     } finally {
       setLoading(false);
     }
@@ -69,14 +80,25 @@ export default function RegisterPage() {
     setError('');
     setLoading(true);
     try {
-      console.log("OTP payload:", { email: form.email, otp });
       await authAPI.verifyOtp({ email: form.email, otp });
+      await authAPI.register(form);
       setStep(STEPS.DONE);
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       setError(err?.response?.data?.message || 'Invalid OTP');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (cooldown > 0) return;
+    setError('');
+    try {
+      await authAPI.sendOtp({ email: form.email });
+      setCooldown(30);
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to resend');
     }
   };
 
@@ -99,7 +121,7 @@ export default function RegisterPage() {
             <h1 className={styles.heading}>Create your account</h1>
             <p className={styles.sub}>Join UniClub and discover your campus</p>
             {error && <div className={styles.errorBanner}>{error}</div>}
-            <form onSubmit={handleRegister} className={styles.form}>
+            <form onSubmit={handleContinue} className={styles.form}>
               <FormSelect label="Select Role" name="role" options={ROLE_OPTIONS} value={form.role} onChange={handleChange} required />
               
               <FormInput label="Full name" name="name" placeholder="Jane Smith" value={form.name} onChange={handleChange} required />
@@ -135,6 +157,23 @@ export default function RegisterPage() {
                 Verify OTP
               </Button>
             </form>
+            <div style={{ textAlign: 'center', marginTop: '1rem', fontSize: '0.9rem' }}>
+              <span style={{ color: '#888' }}>Didn't receive code? </span>
+              <button 
+                type="button" 
+                onClick={handleResend} 
+                disabled={cooldown > 0}
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: cooldown > 0 ? '#555' : '#c9f28f', 
+                  cursor: cooldown > 0 ? 'not-allowed' : 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                {cooldown > 0 ? `Resend in 0:${cooldown.toString().padStart(2, '0')}` : 'Resend OTP'}
+              </button>
+            </div>
           </>
         )}
 

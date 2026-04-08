@@ -1,45 +1,56 @@
 .card {
   background: #111111;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  border-color: rgba(201,242,143,0.2);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  border-color: rgba(201, 242, 143, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
 .imageWrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/9;
   overflow: hidden;
 }
 
 .image {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
-.card:hover .image { transform: scale(1.05); }
+
+.card:hover .image {
+  transform: scale(1.05);
+}
 
 .imageOverlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 60%);
 }
 
 .category {
   position: absolute;
-  top: 1rem; left: 1rem;
+  top: 1rem;
+  left: 1rem;
   font-size: 0.7rem;
   font-weight: 700;
   color: #c9f28f;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(201,242,143,0.3);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(201, 242, 143, 0.3);
   padding: 0.25rem 0.75rem;
   border-radius: 100px;
   backdrop-filter: blur(8px);
@@ -52,6 +63,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1;
 }
 
 .name {
@@ -67,6 +79,7 @@
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -75,7 +88,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 .members {
@@ -91,13 +105,13 @@
   font-weight: 600;
   padding: 0.4rem 1rem;
   border-radius: 100px;
-  background: rgba(201,242,143,0.1);
+  background: rgba(201, 242, 143, 0.1);
   color: #c9f28f;
-  border: 1px solid rgba(201,242,143,0.3);
+  border: 1px solid rgba(201, 242, 143, 0.3);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .joinBtn:hover {
-  background: rgba(201,242,143,0.2);
+  background: rgba(201, 242, 143, 0.2);
 }

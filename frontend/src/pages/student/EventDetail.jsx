@@ -6,6 +6,7 @@ import { eventsAPI } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import { LoadingSpinner, Button, StatusBadge } from '../../components/UI';
 import { Calendar, Clock, MapPin, Users, AlertTriangle, ArrowLeft, CheckCircle } from 'lucide-react';
+import { getEventStatus } from '../../utils/eventUtils';
 import styles from './Student.module.css';
 
 export default function EventDetail() {
@@ -41,7 +42,7 @@ export default function EventDetail() {
 
   const isRegistered = event.isRegistered;
   const isFull = event.registeredCount >= event.maxParticipants;
-  const isPast = new Date(event.endTime) < new Date();
+  const isPast = getEventStatus(event) === 'PAST';
 
   return (
     <AppLayout>

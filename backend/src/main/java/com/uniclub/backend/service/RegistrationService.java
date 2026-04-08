@@ -32,6 +32,10 @@ public class RegistrationService {
     }
 
     public Registration register(Integer userId, Long eventId) {
+        if (registrationRepository.existsByStudentIdAndEventId(userId, eventId)) {
+            throw new RuntimeException("Student is already registered for this event");
+        }
+
         User user = entityManager.find(User.class, userId);
         if (user == null) {
             throw new RuntimeException("User not found: " + userId);
@@ -45,5 +49,12 @@ public class RegistrationService {
         registration.setRegisteredAt(LocalDateTime.now());
 
         return registrationRepository.save(registration);
+    }
+    
+    public List<User> getRegisteredStudents(Long eventId) {
+        return registrationRepository.findByEventId(eventId)
+                .stream()
+                .map(Registration::getStudent)
+                .toList();
     }
 }

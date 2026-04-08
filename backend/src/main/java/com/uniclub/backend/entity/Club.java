@@ -14,8 +14,13 @@ public class Club {
     private Long id;
 
     private String name;
+
+    @Column(length = 1000)
     private String description;
+
     private String category;
+    private String posterUrl;
+    private String websiteLink;
 
     @OneToMany(mappedBy = "club")
     @JsonIgnore

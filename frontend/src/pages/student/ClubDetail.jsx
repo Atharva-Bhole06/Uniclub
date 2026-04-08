@@ -6,8 +6,10 @@ import { clubsAPI } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
 import { LoadingSpinner, EmptyState, Button } from '../../components/UI';
-import { Users, Calendar, ArrowLeft } from 'lucide-react';
+import { Users, Calendar, ArrowLeft, Globe } from 'lucide-react';
 import styles from './Student.module.css';
+
+const BACKEND = 'http://localhost:8080';
 
 export default function ClubDetail() {
   const { id } = useParams();
@@ -38,7 +40,15 @@ export default function ClubDetail() {
 
         {/* Hero */}
         <div className={styles.clubHero}>
-          <img src={club?.imageUrl || '/images/default-club.png'} alt={club?.name} className={styles.clubHeroImg} />
+          <img
+            src={
+              club?.posterUrl
+                ? `${BACKEND}/${club.posterUrl}`
+                : club?.imageUrl || '/images/default-club.png'
+            }
+            alt={club?.name}
+            className={styles.clubHeroImg}
+          />
           <div className={styles.clubHeroOverlay} />
           <div className={styles.clubHeroContent}>
             <span className={styles.clubCategory}>{club?.category}</span>
@@ -54,10 +64,38 @@ export default function ClubDetail() {
           <div className={styles.clubAbout}>
             <h2 className={styles.sectionTitle}>About this club</h2>
             <p className={styles.clubDesc}>{club?.description || 'No description provided.'}</p>
-            {club?.isMember
-              ? <Button variant="secondary" loading={leaving} onClick={handleLeave}>Leave Club</Button>
-              : <Button variant="primary" loading={joining} onClick={handleJoin}>Join Club</Button>
-            }
+
+            <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+              {club?.isMember
+                ? <Button variant="secondary" loading={leaving} onClick={handleLeave}>Leave Club</Button>
+                : <Button variant="primary" loading={joining} onClick={handleJoin}>Join Club</Button>
+              }
+              {club?.websiteLink && (
+                <a
+                  href={club.websiteLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                    padding: '0.6rem 1.2rem',
+                    background: 'rgba(201,242,143,0.1)',
+                    border: '1px solid rgba(201,242,143,0.3)',
+                    color: '#c9f28f',
+                    borderRadius: '10px',
+                    fontSize: '0.88rem',
+                    fontWeight: '600',
+                    textDecoration: 'none',
+                    transition: 'all 0.2s ease',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(201,242,143,0.18)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(201,242,143,0.1)'}
+                >
+                  <Globe size={14} /> Visit Website
+                </a>
+              )}
+            </div>
           </div>
 
           {/* Events */}

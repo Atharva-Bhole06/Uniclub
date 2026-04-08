@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users } from 'lucide-react';
+import { Users, Globe } from 'lucide-react';
 import styles from './ClubCard.module.css';
+
+const BACKEND = 'http://localhost:8080';
 
 export default function ClubCard({ club, onJoin, showHeadInfo }) {
   const navigate = useNavigate();
@@ -10,7 +12,11 @@ export default function ClubCard({ club, onJoin, showHeadInfo }) {
     <article className={styles.card} onClick={() => navigate(`/student/clubs/${club.id}`)}>
       <div className={styles.imageWrap}>
         <img
-          src={club.imageUrl || '/images/default-club.png'}
+          src={
+            club.posterUrl
+              ? `${BACKEND}/${club.posterUrl}`
+              : club.imageUrl || '/images/default-club.png'
+          }
           alt={club.name}
           className={styles.image}
           loading="lazy"

@@ -1,18 +1,21 @@
 .card {
   background: #111111;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.35s ease;
   display: flex;
   flex-direction: column;
+  max-width: 380px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  border-color: rgba(201,242,143,0.2);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,242,143,0.1);
+  border-color: rgba(201, 242, 143, 0.2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(201, 242, 143, 0.1);
 }
 
 .imageWrap {
@@ -29,12 +32,14 @@
   transition: transform 0.5s ease;
 }
 
-.card:hover .image { transform: scale(1.05); }
+.card:hover .image {
+  transform: scale(1.05);
+}
 
 .imageOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
 }
 
 .statusBadge {
@@ -48,7 +53,7 @@
   padding: 0.3rem 0.75rem;
   border-radius: 100px;
   border: 1px solid;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
 }
 
@@ -102,4 +107,31 @@
   gap: 0.35rem;
   font-size: 0.78rem;
   color: #6b7280;
+}
+
+.registerActionBtn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(201, 242, 143, 0.1);
+  color: #c9f28f;
+  border: 1px solid rgba(201, 242, 143, 0.2);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.registerActionBtn:hover {
+  background: rgba(201, 242, 143, 0.2);
+  transform: translateY(-2px);
+}
+
+.registerActionBtn:active {
+  transform: translateY(0);
 }

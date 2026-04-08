@@ -7,6 +7,8 @@ import { LoadingSpinner, EmptyState, PageHeader, FormTextarea, Button } from '..
 import { CheckSquare, Calendar, MapPin, Users, Clock, CheckCircle, XCircle } from 'lucide-react';
 import styles from './Faculty.module.css';
 
+const BACKEND = 'http://localhost:8080';
+
 export default function EventApproval() {
   const [rejectModal, setRejectModal] = useState(null);
   const [rejectReason, setRejectReason] = useState('');
@@ -41,17 +43,19 @@ export default function EventApproval() {
               {events.map(ev => (
                 <div key={ev.id} className={styles.approvalCard}>
                   <div className={styles.approvalImg}>
-                    <img src={ev.imageUrl || '/images/default-event.png'} alt={ev.title} />
+                    <img 
+                      src={ev.posterUrl ? `${BACKEND}/${ev.posterUrl}` : ev.imageUrl || '/images/default-event.png'} 
+                      alt={ev.title} 
+                    />
                   </div>
                   <div className={styles.approvalInfo}>
-                    <span className={styles.clubBadge}>{ev.clubName}</span>
+                    <span className={styles.clubBadge}>{ev.club?.name || ev.clubName || 'Unknown Club'}</span>
                     <h3 className={styles.approvalTitle}>{ev.title}</h3>
                     <p className={styles.approvalDesc}>{ev.description}</p>
                     <div className={styles.approvalMeta}>
-                      <span><Calendar size={13} /> {new Date(ev.startTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                      <span><Clock size={13} /> {new Date(ev.startTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })} – {new Date(ev.endTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
-                      <span><MapPin size={13} /> {ev.venue || 'TBA'}</span>
-                      <span><Users size={13} /> Max {ev.maxParticipants || '∞'}</span>
+                      <span><Calendar size={13} /> {ev.startTime ? new Date(ev.startTime).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}</span>
+                      <span><Clock size={13} /> {ev.startTime && ev.endTime ? `${new Date(ev.startTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })} – ${new Date(ev.endTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}` : ev.startTime ? new Date(ev.startTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '—'}</span>
+                      <span><MapPin size={13} /> {ev.venue || ev.location || 'TBA'}</span>
                     </div>
                   </div>
                   <div className={styles.approvalActions}>

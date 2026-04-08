@@ -4,6 +4,7 @@ import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
 import { LoadingSpinner, EmptyState, PageHeader, StatusBadge } from '../../components/UI';
 import { Star, Clock } from 'lucide-react';
+import { isEventPast } from '../../utils/eventUtils';
 import styles from './Student.module.css';
 
 export default function MyEvents() {
@@ -15,13 +16,13 @@ export default function MyEvents() {
     const fetchRegistered = async () => {
       try {
         const userId = localStorage.getItem("userId");
-        const res = await fetch(`http://localhost:8080/api/student/my-events?userId=${userId}`);
-        if (!res.ok) {
+        const { studentAPI } = await import('../../services/api');
+        const res = await studentAPI.getMyEvents(userId);
+        if (res.status === 200 || res.status === 201) {
+           setEvents(res.data || []);
+        } else {
            setEvents([]);
-           return;
         }
-        const data = await res.json();
-        setEvents(data || []);
       } catch (err) {
         setEvents([]); // Fallback to empty instead of crashing
       } finally {
@@ -31,9 +32,8 @@ export default function MyEvents() {
     fetchRegistered();
   }, []);
 
-  const now = new Date();
-  const upcoming = events?.filter(e => new Date(e.startTime) > now) || [];
-  const past = events?.filter(e => new Date(e.startTime) <= now) || [];
+  const upcoming = events?.filter(e => !isEventPast(e)) || [];
+  const past = events?.filter(e => isEventPast(e)) || [];
 
   if (loading) return <AppLayout><LoadingSpinner /></AppLayout>;
 
