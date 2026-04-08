@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/head")
-@CrossOrigin(origins = "http://localhost:5173")
+
 public class ClubHeadController {
 
     @Autowired

@@ -6,7 +6,10 @@ const BASE_URL = `${API_BASE}/api`;
 const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  headers: { "Content-Type": "application/json" },
+  headers: { 
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "69420"
+  },
 });
 
 // Attach JWT on every request
