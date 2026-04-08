@@ -1,15 +1,11 @@
 import axios from 'axios';
 
-export const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
-const BASE_URL = `${API_BASE}/api`;
+const BASE_URL = "http://localhost:8080/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  headers: { 
-    "Content-Type": "application/json",
-    "ngrok-skip-browser-warning": "69420"
-  },
+  headers: { "Content-Type": "application/json" },
 });
 
 // Attach JWT on every request

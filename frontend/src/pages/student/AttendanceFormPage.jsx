@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FormInput, Button } from '../../components/UI';
-import api, { authAPI } from '../../services/api';
+import { authAPI } from '../../services/api';
+import axios from 'axios';
 
 export default function AttendanceForm() {
   const { sessionId } = useParams();
@@ -22,7 +23,7 @@ export default function AttendanceForm() {
   useEffect(() => {
     const fetchSession = async () => {
       try {
-        const res = await api.get(`/attendance/${sessionId}`);
+        const res = await axios.get(`http://localhost:8080/api/attendance/${sessionId}`);
         setSessionData(res.data.data);
       } catch (err) {
         setError(err.response?.data?.message || 'Error loading attendance form or expired.');
@@ -45,7 +46,7 @@ export default function AttendanceForm() {
     }
     setSubmitting(true);
     try {
-      await api.post(`/attendance/${sessionId}/submit`, {
+      await axios.post(`http://localhost:8080/api/attendance/${sessionId}/submit`, {
         studentId: user?.id,
         responses,
         rollNo: rollNo.trim(),

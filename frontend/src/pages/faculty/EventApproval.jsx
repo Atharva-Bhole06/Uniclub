@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useApi, useMutation } from '../../hooks/useApi';
-import { eventsAPI, API_BASE } from '../../services/api';
+import { eventsAPI } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import Modal from '../../components/Modal';
 import { LoadingSpinner, EmptyState, PageHeader, FormTextarea, Button } from '../../components/UI';
 import { CheckSquare, Calendar, MapPin, Users, Clock, CheckCircle, XCircle } from 'lucide-react';
 import styles from './Faculty.module.css';
+
+const BACKEND = 'http://localhost:8080';
 
 export default function EventApproval() {
   const [rejectModal, setRejectModal] = useState(null);
@@ -42,7 +44,7 @@ export default function EventApproval() {
                 <div key={ev.id} className={styles.approvalCard}>
                   <div className={styles.approvalImg}>
                     <img 
-                      src={ev.posterUrl ? `${API_BASE}/${ev.posterUrl}` : ev.imageUrl || '/images/default-event.png'} 
+                      src={ev.posterUrl ? `${BACKEND}/${ev.posterUrl}` : ev.imageUrl || '/images/default-event.png'} 
                       alt={ev.title} 
                     />
                   </div>

@@ -2,12 +2,14 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useApi, useMutation } from '../../hooks/useApi';
-import { clubsAPI, API_BASE } from '../../services/api';
+import { clubsAPI } from '../../services/api';
 import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
 import { LoadingSpinner, EmptyState, Button } from '../../components/UI';
 import { Users, Calendar, ArrowLeft, Globe } from 'lucide-react';
 import styles from './Student.module.css';
+
+const BACKEND = 'http://localhost:8080';
 
 export default function ClubDetail() {
   const { id } = useParams();
@@ -41,7 +43,7 @@ export default function ClubDetail() {
           <img
             src={
               club?.posterUrl
-                ? `${API_BASE}/${club.posterUrl}`
+                ? `${BACKEND}/${club.posterUrl}`
                 : club?.imageUrl || '/images/default-club.png'
             }
             alt={club?.name}
