@@ -831,6 +831,29 @@
   border-color: rgba(255, 255, 255, 0.25);
 }
 
+.scannerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.42rem 1.1rem;
+  border-radius: 100px;
+  background: rgba(201, 242, 143, 0.1);
+  color: #c9f28f;
+  border: 1px solid rgba(201, 242, 143, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.01em;
+}
+
+.scannerBtn:hover {
+  background: rgba(201, 242, 143, 0.18);
+  border-color: rgba(201, 242, 143, 0.55);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(201, 242, 143, 0.15);
+}
+
 /* ── Feedback Page ────────────────────────────────── */
 .feedbackCard {
   background: #111;

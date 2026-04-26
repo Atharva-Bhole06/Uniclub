@@ -30,6 +30,10 @@ public class AttendanceSubmission {
     private String rollNo;
     private String division;
 
+    // Location captured at the time of submission (for audit & server-side validation)
+    private Double latitude;
+    private Double longitude;
+
     // We can store default and custom responses here
     @ElementCollection
     @CollectionTable(name = "attendance_submission_responses", joinColumns = @JoinColumn(name = "submission_id"))

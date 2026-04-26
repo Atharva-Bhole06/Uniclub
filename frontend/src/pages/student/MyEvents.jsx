@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AppLayout from '../../components/AppLayout';
 import EventCard from '../../components/EventCard';
 import { LoadingSpinner, EmptyState, PageHeader, StatusBadge } from '../../components/UI';
-import { Star, Clock } from 'lucide-react';
+import { Star, Clock, QrCode } from 'lucide-react';
 import { isEventPast } from '../../utils/eventUtils';
 import styles from './Student.module.css';
 
@@ -52,6 +52,14 @@ export default function MyEvents() {
                     <EventCard event={ev} />
                     <div className={styles.myEventActions}>
                       <StatusBadge status={ev.attendanceStatus || 'REGISTERED'} />
+                      <button
+                        className={styles.scannerBtn}
+                        onClick={() => navigate('/student/scan')}
+                        title="Scan QR for attendance"
+                      >
+                        <QrCode size={15} />
+                        Scan Attendance
+                      </button>
                     </div>
                   </div>
                 ))}

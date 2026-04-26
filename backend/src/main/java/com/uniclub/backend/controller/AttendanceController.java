@@ -47,8 +47,15 @@ public class AttendanceController {
             @PathVariable String sessionId,
             @RequestBody SubmitAttendanceRequest req) {
         try {
-            // req.getStudentId() would ideally come from token, but for now we take it from body request or parameter
-            AttendanceSubmission submission = attendanceService.submitAttendance(sessionId, req.getStudentId(), req.getResponses(), req.getRollNo(), req.getDivision());
+            AttendanceSubmission submission = attendanceService.submitAttendance(
+                    sessionId,
+                    req.getStudentId(),
+                    req.getResponses(),
+                    req.getRollNo(),
+                    req.getDivision(),
+                    req.getLatitude(),
+                    req.getLongitude()
+            );
             return ResponseEntity.ok(ApiResponse.ok("Attendance recorded", submission));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
@@ -77,5 +84,8 @@ public class AttendanceController {
         private Map<String, String> responses;
         private String rollNo;
         private String division;
+        // Optional location coordinates sent from the frontend
+        private Double latitude;
+        private Double longitude;
     }
 }
