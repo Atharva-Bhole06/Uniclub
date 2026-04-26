@@ -42,6 +42,11 @@ public class AttendanceController {
         }
     }
 
+    @GetMapping("/config")
+    public ResponseEntity<ApiResponse<Map<String, Boolean>>> getConfig() {
+        return ResponseEntity.ok(ApiResponse.ok("Config fetched", Map.of("testMode", attendanceService.isTestMode())));
+    }
+
     @PostMapping("/{sessionId}/submit")
     public ResponseEntity<ApiResponse<AttendanceSubmission>> submitAttendance(
             @PathVariable String sessionId,

@@ -22,3 +22,9 @@ cd backend
 
 ### 💡 Subagent / Workflow Integration
 If you want me (the AI) to automatically run these for you in the future without detailed commands, I have also created a quick workflow! Just ask me to **"run the servers"** and I will handle it automatically.
+
+
+http://localhost:5173/student/scan
+frontend/src/utils/locationUtils.js and set export const TEST_MODE = true; or temporarily configure OVERRIDE_COORDINATES to the college coordinates. For testing end-to-end bypassing, also flip TEST_MODE = true in AttendanceService.java!
+
+Make sure you revert these flags to false and null respectively before any final production build. Let me know if you need any adjustments!

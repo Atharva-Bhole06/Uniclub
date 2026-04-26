@@ -6,7 +6,7 @@ import { LoadingSpinner, EmptyState, PageHeader, StatusBadge } from '../../compo
 import { BarChart2, Search } from 'lucide-react';
 import styles from './Faculty.module.css';
 
-function AttendanceDetailsView({ attendance }) {
+function AttendanceDetailsView({ attendance, selectedEvent }) {
   const [filterBranch, setFilterBranch] = useState('');
   const [filterYear, setFilterYear] = useState('');
   const [filterDiv, setFilterDiv] = useState('');
@@ -14,8 +14,8 @@ function AttendanceDetailsView({ attendance }) {
 
   const filtered = attendance.filter(a => {
     const student = a.student || {};
-    if (filterBranch && student.department !== filterBranch) return false;
-    if (filterYear && student.year?.toString() !== filterYear) return false;
+    if (filterBranch && student.department?.toLowerCase() !== filterBranch.toLowerCase()) return false;
+    if (filterYear && student.year?.toLowerCase() !== filterYear.toLowerCase()) return false;
     if (filterDiv && a.division !== filterDiv) return false;
     if (searchRoll && !a.rollNo?.toLowerCase().includes(searchRoll.toLowerCase())) return false;
     return true;
@@ -27,8 +27,8 @@ function AttendanceDetailsView({ attendance }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <div className={styles.attendanceStats} style={{ marginBottom: 0 }}>
         <div style={{ display: 'flex', gap: '2rem', width: '100%' }}>
-          <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#c9f28f' }}>{attendance.length}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Present</div></div>
-          <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{totalFiltered}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Matching Filters</div></div>
+          <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#c9f28f' }}>{selectedEvent?.registeredCount || 0}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Registered</div></div>
+          <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{attendance.length}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Present</div></div>
         </div>
       </div>
 
@@ -39,16 +39,17 @@ function AttendanceDetailsView({ attendance }) {
         </div>
         <select value={filterBranch} onChange={e => setFilterBranch(e.target.value)} style={{ background: '#222', border: 'none', color: '#fff', padding: '8px 12px', borderRadius: '6px' }}>
           <option value="">All Branches</option>
-          <option value="Computer Science">Computer Science</option>
+          <option value="CS">CS</option>
           <option value="IT">IT</option>
+          <option value="AIML">AIML</option>
           <option value="EXTC">EXTC</option>
         </select>
         <select value={filterYear} onChange={e => setFilterYear(e.target.value)} style={{ background: '#222', border: 'none', color: '#fff', padding: '8px 12px', borderRadius: '6px' }}>
           <option value="">All Years</option>
-          <option value="1">1st Year</option>
-          <option value="2">2nd Year</option>
-          <option value="3">3rd Year</option>
-          <option value="4">4th Year</option>
+          <option value="FE">FE</option>
+          <option value="SE">SE</option>
+          <option value="TE">TE</option>
+          <option value="BE">BE</option>
         </select>
         <input placeholder="Division (e.g. A)" value={filterDiv} onChange={e => setFilterDiv(e.target.value)} style={{ background: '#222', border: 'none', color: '#fff', padding: '8px 12px', borderRadius: '6px', width: '120px' }} />
       </div>
@@ -90,6 +91,7 @@ export default function AttendanceMonitor() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [attendance, setAttendance] = useState([]);
   const [attLoading, setAttLoading] = useState(false);
+  const [selectedClub, setSelectedClub] = useState('');
 
   const { data: events, loading: evLoading } = useApi(
     () => api.get('/faculty/events/approved')
@@ -110,6 +112,14 @@ export default function AttendanceMonitor() {
     }
   };
 
+  const uniqueClubs = Array.from(new Set(events?.map(ev => ev.club?.name || ev.clubName).filter(Boolean)));
+  const filteredEvents = events?.filter(ev => {
+    const clubName = ev.club?.name || ev.clubName;
+    if (selectedClub && clubName !== selectedClub) return false;
+    return true;
+  })?.sort((a, b) => new Date(b.startTime) - new Date(a.startTime)) || [];
+  const displayEvents = filteredEvents.slice(0, 7);
+
   return (
     <AppLayout>
       <div className={styles.page}>
@@ -118,10 +128,16 @@ export default function AttendanceMonitor() {
         <div className={styles.attendanceLayout}>
           {/* Event List */}
           <div className={styles.eventsList}>
-            <h3 className={styles.panelTitle}>Select Event</h3>
-            {evLoading ? <LoadingSpinner /> : !events?.length
+            <div style={{ marginBottom: '1.2rem' }}>
+              <select value={selectedClub} onChange={e => setSelectedClub(e.target.value)} style={{ width: '100%', padding: '10px 12px', background: '#222', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', outline: 'none' }}>
+                <option value="">All Clubs</option>
+                {uniqueClubs.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <h3 className={styles.panelTitle} style={{ marginBottom: '1rem', fontSize: '1rem' }}>Recent Events</h3>
+            {evLoading ? <LoadingSpinner /> : !displayEvents.length
               ? <EmptyState icon={BarChart2} title="No events available" />
-              : events.map(ev => (
+              : displayEvents.map(ev => (
                 <div
                   key={ev.id}
                   className={`${styles.eventSelectRow} ${selectedEvent?.id === ev.id ? styles.selected : ''}`}
@@ -131,7 +147,6 @@ export default function AttendanceMonitor() {
                     <p className={styles.eventSelectTitle}>{ev.title}</p>
                     <p className={styles.eventSelectDate}>{new Date(ev.startTime).toLocaleDateString('en-IN', { day:'numeric', month:'short' })}</p>
                   </div>
-                  <span style={{ color: '#6b7280', fontSize: '0.8rem' }}>{ev.registeredCount || 0} registered</span>
                 </div>
               ))
             }
@@ -142,7 +157,7 @@ export default function AttendanceMonitor() {
             {!selectedEvent ? (
               <div className={styles.selectPrompt}>← Select an event to view attendance</div>
             ) : attLoading ? <LoadingSpinner /> : (
-              <AttendanceDetailsView attendance={attendance?.data || attendance || []} />
+              <AttendanceDetailsView attendance={attendance?.data || attendance || []} selectedEvent={selectedEvent} />
             )}
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FormInput, Button } from '../../components/UI';
 import useGeolocation from '../../hooks/useGeolocation';
-import { ALLOWED_RADIUS_METERS } from '../../utils/locationUtils';
+import { ALLOWED_RADIUS_METERS, GPS_ACCURACY_BUFFER } from '../../utils/locationUtils';
 import axios from 'axios';
 
 // ─── Inline styles ─────────────────────────────────────────────────────────────
@@ -30,7 +30,7 @@ const centered = {
 
 // ─── Location Status Banners ────────────────────────────────────────────────────
 
-function LocationBanner({ status, distance, errorMsg, onRetry }) {
+function LocationBanner({ status, distance, errorMsg, onRetry, isTestMode }) {
   const configs = {
     loading: {
       color: '#60a5fa',
@@ -43,8 +43,8 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
           </circle>
         </svg>
       ),
-      title: 'Detecting your location…',
-      sub: 'Please wait while we verify you are on campus. This may take a few seconds.',
+      title: 'Verifying your location…',
+      sub: 'Hold tight — we are checking that you are within college premises. This usually takes 5–10 seconds.',
     },
     allowed: {
       color: '#4ade80',
@@ -55,8 +55,10 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
         </svg>
       ),
-      title: `✓ On Campus  ·  ${distance}m from college`,
-      sub: 'You are within the college premises. You may proceed to submit attendance.',
+      title: isTestMode ? `✓ Test Mode Active` : `✓ On Campus  ·  ${distance}m from college`,
+      sub: isTestMode 
+        ? 'Location checks are temporarily bypassed for testing.'
+        : 'You are within the college premises. You may proceed to submit attendance.',
     },
     blocked: {
       color: '#f87171',
@@ -70,7 +72,7 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
         </svg>
       ),
       title: `Outside Campus  ·  ${distance}m away`,
-      sub: `Attendance can only be marked within ${ALLOWED_RADIUS_METERS}m of college. You are currently ${distance}m away.`,
+      sub: `You are ${distance}m from the college. Attendance can only be marked within ${ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m of the campus. If you are on campus, try moving closer to the building and retry.`,
     },
     denied: {
       color: '#fb923c',
@@ -84,7 +86,7 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
         </svg>
       ),
       title: 'Location Permission Required',
-      sub: errorMsg || 'Please allow location access in your browser to mark attendance.',
+      sub: errorMsg || 'UniClub needs your location to confirm you are on campus. Tap the lock icon in your browser address bar and allow Location, then tap Try Again.',
     },
     error: {
       color: '#fb923c',
@@ -138,6 +140,11 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
             Try Again
           </button>
         )}
+        {isTestMode && status === 'allowed' && (
+          <div style={{ marginTop: '0.7rem', display: 'inline-block', padding: '0.2rem 0.5rem', background: '#fbbf24', color: '#000', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+            TEST MODE ENABLED
+          </div>
+        )}
       </div>
     </div>
   );
@@ -145,7 +152,7 @@ function LocationBanner({ status, distance, errorMsg, onRetry }) {
 
 // ─── Full-Screen Gate Screens ───────────────────────────────────────────────────
 
-function LocationGateScreen({ status, distance, errorMsg, onRetry }) {
+function LocationGateScreen({ status, distance, errorMsg, onRetry, isTestMode }) {
   if (status === 'loading') {
     return (
       <div style={centered}>
@@ -155,9 +162,13 @@ function LocationGateScreen({ status, distance, errorMsg, onRetry }) {
           borderTop: '4px solid #60a5fa',
           animation: 'spin 1s linear infinite',
         }} />
-        <h2 style={{ color: '#fff', fontSize: '1.5rem', margin: 0 }}>Verifying Location</h2>
-        <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '320px', lineHeight: 1.6 }}>
-          Allow location access when prompted. We are checking that you are within college premises.
+        <h2 style={{ color: '#fff', fontSize: '1.5rem', margin: 0 }}>Verifying your location…</h2>
+        <p style={{ color: 'rgba(255,255,255,0.5)', maxWidth: '340px', lineHeight: 1.6 }}>
+          If your browser prompts for location, please tap <strong style={{ color: '#93c5fd' }}>Allow</strong>.
+          We are checking that you are within college premises.
+        </p>
+        <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', maxWidth: '300px' }}>
+          This may take up to 15 seconds on slow GPS.
         </p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -179,7 +190,7 @@ function LocationGateScreen({ status, distance, errorMsg, onRetry }) {
         <h2 style={{ color: '#f87171', fontSize: '1.5rem', margin: 0 }}>Outside Campus</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '360px', lineHeight: 1.65 }}>
           You are <strong style={{ color: '#fca5a5' }}>{distance}m away</strong> from the college.
-          Attendance can only be marked within <strong style={{ color: '#fca5a5' }}>{ALLOWED_RADIUS_METERS}m</strong> of the campus.
+          Attendance can only be marked within <strong style={{ color: '#fca5a5' }}>{ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m</strong> of the campus.
         </p>
         <div style={{
           background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)',
@@ -219,18 +230,18 @@ function LocationGateScreen({ status, distance, errorMsg, onRetry }) {
         </div>
         <h2 style={{ color: '#fb923c', fontSize: '1.5rem', margin: 0 }}>Location Access Required</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '380px', lineHeight: 1.65 }}>
-          Location permission was denied. UniClub requires your location to confirm you are on campus before marking attendance.
+          Location permission was denied. UniClub needs your location to confirm you are physically on campus before marking attendance.
         </p>
         <div style={{
           background: 'rgba(251,146,60,0.08)', border: '1px solid rgba(251,146,60,0.25)',
-          borderRadius: '12px', padding: '1rem 1.5rem', maxWidth: '380px', textAlign: 'left',
+          borderRadius: '12px', padding: '1rem 1.5rem', maxWidth: '400px', textAlign: 'left',
         }}>
           <p style={{ margin: '0 0 0.5rem', fontWeight: '600', color: '#fb923c', fontSize: '0.88rem' }}>How to enable location:</p>
-          <ol style={{ margin: 0, paddingLeft: '1.2rem', color: 'rgba(255,255,255,0.55)', fontSize: '0.83rem', lineHeight: 1.7 }}>
-            <li>Tap the 🔒 lock icon in your browser's address bar</li>
-            <li>Find "Location" or "Site permissions"</li>
-            <li>Change it to <strong style={{ color: '#fdba74' }}>Allow</strong></li>
-            <li>Refresh this page and try again</li>
+          <ol style={{ margin: 0, paddingLeft: '1.2rem', color: 'rgba(255,255,255,0.55)', fontSize: '0.83rem', lineHeight: 1.8 }}>
+            <li><strong style={{ color: '#fdba74' }}>Chrome / Edge (Mobile):</strong> Tap the 🔒 lock or ⓘ icon → Permissions → Location → Allow</li>
+            <li><strong style={{ color: '#fdba74' }}>Safari (iPhone):</strong> Settings → Safari → Location → Allow</li>
+            <li><strong style={{ color: '#fdba74' }}>Chrome (Desktop):</strong> Click the 🔒 lock in address bar → Site settings → Location → Allow</li>
+            <li>After enabling, tap <em>Try Again</em> below — no need to refresh.</li>
           </ol>
         </div>
         <button
@@ -293,6 +304,7 @@ export default function AttendanceForm() {
   const [sessionData, setSessionData] = useState(null);
   const [sessionError, setSessionError] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
+  const [testMode, setTestMode] = useState(false);
 
   // Form state
   const [submitting, setSubmitting] = useState(false);
@@ -302,21 +314,30 @@ export default function AttendanceForm() {
   const [division, setDivision] = useState('');
 
   // Location gate
-  const { status: locStatus, coords, distance, errorMsg, retry } = useGeolocation();
+  const { status: locStatus, coords, distance, errorMsg, retry, isTestMode } = useGeolocation({
+    testMode: testMode,
+    enabled: !sessionLoading
+  });
 
-  // Fetch session on mount
+  // Fetch session & config on mount
   useEffect(() => {
-    const fetchSession = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/attendance/${sessionId}`);
-        setSessionData(res.data.data);
+        const [sessionRes, configRes] = await Promise.all([
+          axios.get(`http://localhost:8080/api/attendance/${sessionId}`),
+          axios.get(`http://localhost:8080/api/attendance/config`)
+        ]);
+        setSessionData(sessionRes.data.data);
+        if (configRes.data?.data?.testMode) {
+          setTestMode(true);
+        }
       } catch (err) {
         setSessionError(err.response?.data?.message || 'Error loading attendance form or session expired.');
       } finally {
         setSessionLoading(false);
       }
     };
-    fetchSession();
+    fetchData();
   }, [sessionId]);
 
   const handleChange = (e) => {
@@ -416,6 +437,7 @@ export default function AttendanceForm() {
             distance={distance}
             errorMsg={errorMsg}
             onRetry={retry}
+            isTestMode={isTestMode}
           />
         </div>
       </div>
@@ -463,6 +485,7 @@ export default function AttendanceForm() {
         distance={distance}
         errorMsg={errorMsg}
         onRetry={retry}
+        isTestMode={isTestMode}
       />
 
       {/* Student profile card */}
