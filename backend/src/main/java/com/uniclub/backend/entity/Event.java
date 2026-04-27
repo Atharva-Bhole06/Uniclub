@@ -47,4 +47,7 @@ public class Event {
     @JsonIgnore
     @ToString.Exclude
     private List<Registration> registrations;
+
+    @org.hibernate.annotations.Formula("(SELECT COUNT(*) FROM registration r WHERE r.event_id = id)")
+    private int registeredCount;
 }

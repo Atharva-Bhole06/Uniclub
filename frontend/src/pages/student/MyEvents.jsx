@@ -54,11 +54,20 @@ export default function MyEvents() {
                       <StatusBadge status={ev.attendanceStatus || 'REGISTERED'} />
                       <button
                         className={styles.scannerBtn}
-                        onClick={() => navigate('/student/scan')}
-                        title="Scan QR for attendance"
+                        onClick={() => navigate(`/student/my-qr/${ev.id}`)}
+                        title="Show my attendance QR"
+                        style={{ background: '#3b82f6', borderColor: '#3b82f6', marginRight: '0.5rem' }}
                       >
                         <QrCode size={15} />
-                        Scan Attendance
+                        My QR
+                      </button>
+                      <button
+                        className={styles.scannerBtn}
+                        onClick={() => navigate('/student/scan')}
+                        title="Scan QR for feedback"
+                      >
+                        <QrCode size={15} />
+                        Scan Feedback
                       </button>
                     </div>
                   </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import CustomCursor from './components/CustomCursor';
 
 // Pages
 import LandingPage from './components/LandingPage';
@@ -17,6 +18,7 @@ import MyEvents from './pages/student/MyEvents';
 import FeedbackPage from './pages/student/FeedbackPage';
 import ScannerPage from './pages/student/ScannerPage';
 import AttendanceFormPage from './pages/student/AttendanceFormPage';
+import MyQRPage from './pages/student/MyQRPage';
 
 import ClubHeadDashboard from './pages/clubhead/ClubHeadDashboard';
 import CreateEvent from './pages/clubhead/CreateEvent';
@@ -25,6 +27,7 @@ import ManageClub from './pages/clubhead/ManageClub';
 import Volunteers from './pages/clubhead/Volunteers';
 import Announcements from './pages/clubhead/Announcements';
 import GenerateQRPage from './pages/clubhead/GenerateQRPage';
+import VolunteerScannerPage from './pages/clubhead/VolunteerScannerPage';
 
 import FacultyDashboard from './pages/faculty/FacultyDashboard';
 import CreateClub from './pages/faculty/CreateClub';
@@ -81,6 +84,7 @@ function AppRoutes() {
       <Route path="/student/my-events" element={<RequireAuth role="STUDENT"><MyEvents /></RequireAuth>} />
       <Route path="/student/feedback/:eventId" element={<RequireAuth role="STUDENT"><FeedbackPage /></RequireAuth>} />
       <Route path="/student/scan" element={<RequireAuth role="STUDENT"><ScannerPage /></RequireAuth>} />
+      <Route path="/student/my-qr/:eventId" element={<RequireAuth role="STUDENT"><MyQRPage /></RequireAuth>} />
       <Route path="/attendance/:sessionId" element={<RequireAuth role="STUDENT"><AttendanceFormPage /></RequireAuth>} />
 
       {/* Club Head */}
@@ -91,6 +95,7 @@ function AppRoutes() {
       <Route path="/clubhead/explore-clubs" element={<RequireAuth role="CLUB_HEAD"><ExploreClubs /></RequireAuth>} />
       <Route path="/clubhead/explore-events" element={<RequireAuth role="CLUB_HEAD"><ExploreEvents /></RequireAuth>} />
       <Route path="/clubhead/events/:id/qr" element={<RequireAuth role="CLUB_HEAD"><GenerateQRPage /></RequireAuth>} />
+      <Route path="/clubhead/scan" element={<RequireAuth role="CLUB_HEAD"><VolunteerScannerPage /></RequireAuth>} />
       <Route path="/clubhead/volunteers" element={<RequireAuth role="CLUB_HEAD"><Volunteers /></RequireAuth>} />
       <Route path="/clubhead/announcements" element={<RequireAuth role="CLUB_HEAD"><Announcements /></RequireAuth>} />
 
@@ -111,6 +116,7 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
+      <CustomCursor />
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>

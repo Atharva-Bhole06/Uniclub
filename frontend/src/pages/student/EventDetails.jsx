@@ -175,32 +175,58 @@ export default function EventDetails() {
               </div>
             </div>
 
-            {role === 'CLUB_HEAD' && event.status === 'APPROVED' && (
-               <button 
-                 onClick={() => navigate(`/clubhead/events/${id}/qr`)}
-                 style={{
-                    width: '100%',
-                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
-                    color: 'white', 
-                    border: '1px solid rgba(59, 130, 246, 0.4)', 
-                    padding: '12px 20px', 
-                    borderRadius: '50px', 
-                    cursor: 'pointer', 
-                    fontSize: '1.05rem', 
-                    fontWeight: 600,
-                    boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: '10px',
-                    transition: 'all 0.3s ease'
-                 }}
-                 onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.5)'; }}
-                 onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'; }}
-               >
-                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h6v6h-6z"/></svg>
-                 Generate Attendance QR
-               </button>
+             {role === 'CLUB_HEAD' && event.status === 'APPROVED' && (
+               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                 <button 
+                   onClick={() => navigate(`/clubhead/events/${id}/qr`)}
+                   style={{
+                      width: '100%',
+                      background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                      color: 'white', 
+                      border: '1px solid rgba(59, 130, 246, 0.4)', 
+                      padding: '12px 20px', 
+                      borderRadius: '50px', 
+                      cursor: 'pointer', 
+                      fontSize: '1.05rem', 
+                      fontWeight: 600,
+                      boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '10px',
+                      transition: 'all 0.3s ease'
+                   }}
+                   onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.5)'; }}
+                   onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.3)'; }}
+                 >
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h6v6h-6z"/></svg>
+                   Generate Feedback QR
+                 </button>
+                 <button 
+                   onClick={() => navigate('/clubhead/scan')}
+                   style={{
+                      width: '100%',
+                      background: 'transparent',
+                      color: '#4ade80', 
+                      border: '1px solid #4ade80', 
+                      padding: '12px 20px', 
+                      borderRadius: '50px', 
+                      cursor: 'pointer', 
+                      fontSize: '1.05rem', 
+                      fontWeight: 600,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '10px',
+                      transition: 'all 0.3s ease'
+                   }}
+                   onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(74, 222, 128, 0.1)'; }}
+                   onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                 >
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h6v6h-6z"/></svg>
+                   Scan Attendees
+                 </button>
+               </div>
             )}
           </div>
         </div>

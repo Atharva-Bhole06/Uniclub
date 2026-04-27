@@ -158,7 +158,7 @@ export default function Volunteers() {
         {activeTab === 'PENDING' && (
           pendingApps.length === 0 ? <EmptyState icon={Users} title="No pending applications" description="When students apply, they will appear here." /> :
           <div className={styles.volunteerList}>
-            {pendingApps.map(app => (
+            {pendingApps.filter(app => app.user != null).map(app => (
               <div key={app.id} className={styles.volunteerRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#18181b', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
                 <div>
                   <h4 style={{ margin: 0, color: '#fff' }}>{app.user.fullName} <span style={{ fontSize: '0.8rem', background: '#3f3f46', padding: '0.2rem 0.5rem', borderRadius: '12px', marginLeft: '0.5rem' }}>{app.role}</span></h4>
@@ -180,7 +180,7 @@ export default function Volunteers() {
         {activeTab === 'ACCEPTED' && (
           acceptedApps.length === 0 ? <EmptyState icon={Users} title="No volunteers accepted yet" description="Accept applications to build your team." /> :
           <div className={styles.volunteerList}>
-            {acceptedApps.map(app => (
+            {acceptedApps.filter(app => app.user != null).map(app => (
               <div key={app.id} className={styles.volunteerRow} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#18181b', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
                 <div>
                   <h4 style={{ margin: 0, color: '#fff' }}>{app.user.fullName} <span style={{ fontSize: '0.8rem', background: '#3f3f46', padding: '0.2rem 0.5rem', borderRadius: '12px', marginLeft: '0.5rem', color: '#00e5ff' }}>{app.role}</span></h4>

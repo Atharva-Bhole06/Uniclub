@@ -68,10 +68,10 @@ public class AttendanceController {
     }
 
     @GetMapping("/event/{eventId}")
-    public ResponseEntity<ApiResponse<List<AttendanceSubmission>>> getAttendanceByEvent(@PathVariable Long eventId) {
+    public ResponseEntity<ApiResponse<List<Map<String, Object>>>> getAttendanceByEvent(@PathVariable Long eventId) {
         try {
-            List<AttendanceSubmission> submissions = attendanceService.getSubmissionsByEvent(eventId);
-            return ResponseEntity.ok(ApiResponse.ok("Attendance fetched", submissions));
+            List<Map<String, Object>> attendance = attendanceService.getAttendanceByEvent(eventId);
+            return ResponseEntity.ok(ApiResponse.ok("Attendance fetched", attendance));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
@@ -92,5 +92,22 @@ public class AttendanceController {
         // Optional location coordinates sent from the frontend
         private Double latitude;
         private Double longitude;
+    }
+
+    @PostMapping("/mark-direct")
+    public ResponseEntity<ApiResponse<String>> markDirectAttendance(@RequestBody DirectAttendanceRequest req) {
+        try {
+            attendanceService.markDirectAttendance(req.getStudentId(), req.getEventId(), req.getTimestamp());
+            return ResponseEntity.ok(ApiResponse.ok("Attendance marked successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        }
+    }
+
+    @Data
+    public static class DirectAttendanceRequest {
+        private Integer studentId;
+        private Long eventId;
+        private Long timestamp;
     }
 }

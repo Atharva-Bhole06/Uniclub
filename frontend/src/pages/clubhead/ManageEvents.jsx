@@ -50,7 +50,7 @@ export default function ManageEvents() {
               <h2 style={{ color: '#fff', fontSize: '1.4rem' }}>Your Events</h2>
               {events.length > 3 && (
                 <button 
-                  className={styles.outlinedBtn} 
+                  className="viewAllBtn" 
                   onClick={() => setShowAll(!showAll)}
                 >
                   {showAll ? 'Show Less' : 'View All'}

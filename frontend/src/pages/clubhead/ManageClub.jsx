@@ -139,6 +139,9 @@ export default function ManageClub() {
                     accept="image/*"
                     onChange={handlePosterChange}
                   />
+                  <p style={{textAlign: 'center', fontSize: '0.85rem', color: '#a1a1aa', marginTop: '12px'}}>
+                    For a perfect fit without cropping, please use a <strong>16:9 aspect ratio</strong> (Standard size: <strong>1280x720 pixels</strong>).
+                  </p>
                 </div>
 
                 <div className={styles.formGroup}>

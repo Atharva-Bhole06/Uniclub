@@ -3,6 +3,7 @@ package com.uniclub.backend.service;
 import com.uniclub.backend.entity.AttendanceSession;
 import com.uniclub.backend.entity.AttendanceSubmission;
 import com.uniclub.backend.entity.Event;
+import com.uniclub.backend.entity.Registration;
 import com.uniclub.backend.entity.User;
 import com.uniclub.backend.repository.AttendanceSessionRepository;
 import com.uniclub.backend.repository.AttendanceSubmissionRepository;
@@ -115,9 +116,12 @@ public class AttendanceService {
             Double longitude) {
         AttendanceSession session = getSession(sessionId); // validates expiry
 
-        // ── Registration check ───────────────────────────────────────────────
-        if (!registrationRepository.existsByStudentIdAndEventId(studentId, session.getEvent().getId())) {
-            throw new RuntimeException("You are not registered for this event. Only registered students can mark attendance.");
+        // ── Registration & Attendance check ───────────────────────────────────────────────
+        Registration reg = registrationRepository.findByStudentIdAndEventId(studentId, session.getEvent().getId())
+                .orElseThrow(() -> new RuntimeException("You are not registered for this event."));
+                
+        if (!reg.isPresent()) {
+            throw new RuntimeException("You must attend the event to submit feedback. Your attendance was not marked.");
         }
 
         // ── Server-side location check ───────────────────────────────────────
@@ -140,7 +144,7 @@ public class AttendanceService {
                         && s.getStudent().getId() == studentId);
 
         if (alreadySubmitted) {
-            throw new RuntimeException("You have already marked attendance for this event");
+            throw new RuntimeException("You have already submitted feedback for this event");
         }
 
         User student = userService.findByEmail(
@@ -164,9 +168,46 @@ public class AttendanceService {
         return submissionRepository.save(submission);
     }
 
-    public List<AttendanceSubmission> getSubmissionsByEvent(Long eventId) {
-        return submissionRepository.findAll().stream()
+    public List<Map<String, Object>> getAttendanceByEvent(Long eventId) {
+        List<Registration> presentRegistrations = registrationRepository.findByEventId(eventId).stream()
+                .filter(Registration::isPresent)
+                .toList();
+
+        List<AttendanceSubmission> submissions = submissionRepository.findAll().stream()
                 .filter(s -> s.getSession().getEvent().getId().equals(eventId))
                 .toList();
+
+        return presentRegistrations.stream().map(reg -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", reg.getId());
+            map.put("student", reg.getStudent());
+            
+            AttendanceSubmission submission = submissions.stream()
+                    .filter(s -> s.getStudent().getId() == reg.getStudent().getId())
+                    .findFirst()
+                    .orElse(null);
+
+            if (submission != null) {
+                map.put("rollNo", submission.getRollNo());
+                map.put("division", submission.getDivision());
+            } else {
+                map.put("rollNo", "N/A");
+                map.put("division", "N/A");
+            }
+            return map;
+        }).toList();
+    }
+
+    public void markDirectAttendance(Integer studentId, Long eventId, Long timestamp) {
+        if (Math.abs(System.currentTimeMillis() - timestamp) > 60000) {
+            throw new RuntimeException("QR code expired. Please generate a new one.");
+        }
+        Registration reg = registrationRepository.findByStudentIdAndEventId(studentId, eventId)
+                .orElseThrow(() -> new RuntimeException("Student is not registered for this event."));
+        if (reg.isPresent()) {
+            throw new RuntimeException("Attendance already marked for this student.");
+        }
+        reg.setPresent(true);
+        registrationRepository.save(reg);
     }
 }

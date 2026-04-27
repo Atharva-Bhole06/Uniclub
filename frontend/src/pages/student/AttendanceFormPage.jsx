@@ -58,7 +58,7 @@ function LocationBanner({ status, distance, errorMsg, onRetry, isTestMode }) {
       title: isTestMode ? `✓ Test Mode Active` : `✓ On Campus  ·  ${distance}m from college`,
       sub: isTestMode 
         ? 'Location checks are temporarily bypassed for testing.'
-        : 'You are within the college premises. You may proceed to submit attendance.',
+        : 'You are within the college premises. You may proceed to submit feedback.',
     },
     blocked: {
       color: '#f87171',
@@ -72,7 +72,7 @@ function LocationBanner({ status, distance, errorMsg, onRetry, isTestMode }) {
         </svg>
       ),
       title: `Outside Campus  ·  ${distance}m away`,
-      sub: `You are ${distance}m from the college. Attendance can only be marked within ${ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m of the campus. If you are on campus, try moving closer to the building and retry.`,
+      sub: `You are ${distance}m from the college. Feedback can only be submitted within ${ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m of the campus. If you are on campus, try moving closer to the building and retry.`,
     },
     denied: {
       color: '#fb923c',
@@ -190,7 +190,7 @@ function LocationGateScreen({ status, distance, errorMsg, onRetry, isTestMode })
         <h2 style={{ color: '#f87171', fontSize: '1.5rem', margin: 0 }}>Outside Campus</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '360px', lineHeight: 1.65 }}>
           You are <strong style={{ color: '#fca5a5' }}>{distance}m away</strong> from the college.
-          Attendance can only be marked within <strong style={{ color: '#fca5a5' }}>{ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m</strong> of the campus.
+          Feedback can only be submitted within <strong style={{ color: '#fca5a5' }}>{ALLOWED_RADIUS_METERS + GPS_ACCURACY_BUFFER}m</strong> of the campus.
         </p>
         <div style={{
           background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)',
@@ -230,7 +230,7 @@ function LocationGateScreen({ status, distance, errorMsg, onRetry, isTestMode })
         </div>
         <h2 style={{ color: '#fb923c', fontSize: '1.5rem', margin: 0 }}>Location Access Required</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '380px', lineHeight: 1.65 }}>
-          Location permission was denied. UniClub needs your location to confirm you are physically on campus before marking attendance.
+          Location permission was denied. UniClub needs your location to confirm you are physically on campus before submitting feedback.
         </p>
         <div style={{
           background: 'rgba(251,146,60,0.08)', border: '1px solid rgba(251,146,60,0.25)',
@@ -424,7 +424,7 @@ export default function AttendanceForm() {
       <div style={{ maxWidth: '560px', margin: '4rem auto', padding: '0 1rem' }}>
         {/* Slim session header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h2 style={{ color: '#fff', fontSize: '1.6rem', margin: 0 }}>Event Attendance</h2>
+          <h2 style={{ color: '#fff', fontSize: '1.6rem', margin: 0 }}>Event Feedback</h2>
           {sessionData?.event?.title && (
             <p style={{ color: 'var(--success-main)', fontSize: '1.05rem', marginTop: '0.4rem' }}>
               {sessionData.event.title}
@@ -457,9 +457,9 @@ export default function AttendanceForm() {
             <polyline points="20 6 9 17 4 12"/>
           </svg>
         </div>
-        <h2 style={{ color: '#4ade80', fontSize: '1.8rem', margin: 0 }}>Attendance Recorded!</h2>
+        <h2 style={{ color: '#4ade80', fontSize: '1.8rem', margin: 0 }}>Feedback Recorded!</h2>
         <p style={{ color: 'rgba(255,255,255,0.6)', maxWidth: '340px', lineHeight: 1.6 }}>
-          Your attendance for <strong style={{ color: '#fff' }}>{sessionData?.event?.title}</strong> has been successfully marked.
+          Your feedback for <strong style={{ color: '#fff' }}>{sessionData?.event?.title}</strong> has been successfully submitted.
         </p>
         <Button onClick={() => navigate('/student/dashboard')} style={{ marginTop: '0.5rem' }}>
           Back to Dashboard
@@ -471,7 +471,7 @@ export default function AttendanceForm() {
   // ── Render: Attendance form (locStatus === 'allowed') ──
   return (
     <div style={card}>
-      <h2 style={{ fontSize: '1.8rem', marginBottom: '0.3rem', color: '#fff' }}>Event Attendance</h2>
+      <h2 style={{ fontSize: '1.8rem', marginBottom: '0.3rem', color: '#fff' }}>Event Feedback</h2>
       <h3 style={{ color: 'var(--success-main)', fontSize: '1.15rem', marginBottom: '1.5rem', fontWeight: 500 }}>
         {sessionData?.event?.title}
       </h3>
@@ -504,7 +504,7 @@ export default function AttendanceForm() {
           <div><strong style={{ color: '#888', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase' }}>Dept & Year</strong><span style={{ color: '#fff' }}>{user?.department} - {user?.year}</span></div>
         </div>
         <p style={{ fontSize: '0.72rem', color: '#666', marginTop: '0.9rem', fontStyle: 'italic' }}>
-          * This information is automatically captured for verified attendance.
+          * This information is automatically captured for verified feedback.
         </p>
       </div>
 
@@ -566,7 +566,7 @@ export default function AttendanceForm() {
           disabled={locStatus !== 'allowed' || submitting}
           style={{ width: '100%', padding: '1rem', fontSize: '1.05rem', marginTop: '0.5rem' }}
         >
-          Verify &amp; Log Attendance
+          Submit Feedback
         </Button>
 
         {locStatus !== 'allowed' && (

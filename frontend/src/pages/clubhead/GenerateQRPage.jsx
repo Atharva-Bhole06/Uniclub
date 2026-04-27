@@ -47,7 +47,7 @@ export default function GenerateQRPage() {
 
   return (
     <AppLayout>
-      <PageHeader title="Generate Attendance QR" subtitle="Create a time-limited form for students to log attendance" />
+      <PageHeader title="Generate Feedback QR" subtitle="Create a time-limited form for students to log feedback" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
         

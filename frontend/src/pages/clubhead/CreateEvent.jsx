@@ -85,7 +85,7 @@ export default function CreateEventForm({ onSuccess }) {
             
             {/* Custom file upload button */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label style={{ fontSize: '0.85rem', color: '#a1a1aa' }}>Poster Image</label>
+              <label style={{ fontSize: '0.85rem', color: '#a1a1aa' }}>Poster Image <span style={{fontSize: '0.75rem', color: '#c9f28f'}}>(1280x720px)</span></label>
               <label style={{ 
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', 
                 background: 'rgba(255,255,255,0.05)', border: '1px dashed rgba(255,255,255,0.2)', 
@@ -120,6 +120,13 @@ export default function CreateEventForm({ onSuccess }) {
          </h4>
          <p style={{ color: '#71717a', fontSize: '0.85rem', lineHeight: '1.5', marginBottom: '1.5rem' }}>
            If your venue has strict capacity limits, use the Max Capacity field to cap the number of registrations.
+         </p>
+
+         <h4 style={{ color: '#ddd', fontSize: '0.95rem', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Upload size={15} color="#a855f7" /> Image Dimensions
+         </h4>
+         <p style={{ color: '#71717a', fontSize: '0.85rem', lineHeight: '1.5', marginBottom: '1.5rem' }}>
+           To prevent cropping and ensure a perfect fit, please upload images with a <strong>16:9 aspect ratio</strong> (Standard size: <strong>1280x720 pixels</strong>).
          </p>
 
          <div style={{ marginTop: 'auto', padding: '1rem', background: 'rgba(234, 179, 8, 0.1)', borderLeft: '3px solid #eab308', borderRadius: '4px' }}>

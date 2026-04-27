@@ -30,13 +30,35 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Hide native cursor everywhere & use JS component ─── */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+/* ── Custom Cursor Component ─────────────────────────── */
+#custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-2px, -2px);
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+#custom-cursor .cursor-arrow  { display: block; }
+#custom-cursor .cursor-pointer { display: none; }
+
+#custom-cursor.is-pointer .cursor-arrow  { display: none; }
+#custom-cursor.is-pointer .cursor-pointer { display: block; }
+
 a {
   text-decoration: none;
   color: inherit;
 }
 
 button {
-  cursor: pointer;
   border: none;
   outline: none;
   font-family: var(--font-family);

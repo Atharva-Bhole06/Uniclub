@@ -43,6 +43,13 @@ public class ExcelExportService {
                         (existing, replacement) -> existing // Keep the first submission if duplicates exist
                 ));
 
+        java.util.Set<String> feedbackQuestions = new java.util.LinkedHashSet<>();
+        for (AttendanceSubmission sub : submissions) {
+            if (sub.getResponses() != null) {
+                feedbackQuestions.addAll(sub.getResponses().keySet());
+            }
+        }
+
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Attendance Report");
 
@@ -76,16 +83,20 @@ public class ExcelExportService {
 
             // Header Row (Row 3)
             Row headerRow = sheet.createRow(3);
-            String[] headers = {"Name", "Email", "Moodle ID", "Branch", "Year", "Division", "Roll Number", "Attendance Status", "Timestamp"};
+            java.util.List<String> headersList = new java.util.ArrayList<>(java.util.Arrays.asList(
+                "Name", "Email", "Moodle ID", "Branch", "Year", "Division", "Roll Number", "Attendance Status", "Feedback Timestamp"
+            ));
+            headersList.addAll(feedbackQuestions);
+
             CellStyle headerStyle = workbook.createCellStyle();
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             headerStyle.setFont(headerFont);
             headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
-            for (int i = 0; i < headers.length; i++) {
+            for (int i = 0; i < headersList.size(); i++) {
                 Cell cell = headerRow.createCell(i);
-                cell.setCellValue(headers[i]);
+                cell.setCellValue(headersList.get(i));
                 cell.setCellStyle(headerStyle);
             }
 
@@ -154,11 +165,11 @@ public class ExcelExportService {
                 rollCell.setCellStyle(centerStyle);
 
                 Cell statusCell = row.createCell(7);
-                if (submission != null) {
+                if (reg.isPresent()) {
                     statusCell.setCellValue("ATTENDED");
                     statusCell.setCellStyle(attendedStyle);
                     
-                    if (submission.getSubmittedAt() != null) {
+                    if (submission != null && submission.getSubmittedAt() != null) {
                         row.createCell(8).setCellValue(submission.getSubmittedAt().format(formatter));
                     } else {
                         row.createCell(8).setCellValue("-");
@@ -168,9 +179,19 @@ public class ExcelExportService {
                     statusCell.setCellStyle(absentStyle);
                     row.createCell(8).setCellValue("-");
                 }
+
+                int colIdx = 9;
+                for (String question : feedbackQuestions) {
+                    Cell feedbackCell = row.createCell(colIdx++);
+                    if (submission != null && submission.getResponses() != null && submission.getResponses().containsKey(question)) {
+                        feedbackCell.setCellValue(submission.getResponses().get(question));
+                    } else {
+                        feedbackCell.setCellValue("-");
+                    }
+                }
             }
 
-            for (int i = 0; i < headers.length; i++) {
+            for (int i = 0; i < headersList.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
 

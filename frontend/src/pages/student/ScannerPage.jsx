@@ -60,13 +60,13 @@ export default function ScannerPage() {
   return (
     <div className={styles.container}>
       <main className={styles.mainContent}>
-        <h2>QR Attendance Scanner</h2>
-        <p>Align the QR code within the frame to record your attendance.</p>
+        <h2>QR Feedback Scanner</h2>
+        <p>Align the QR code within the frame to access the feedback form.</p>
         
         <div style={{ maxWidth: '400px', margin: '2rem auto' }}>
           {scanResult ? (
              <div style={{ padding: '2rem', background: '#e8f5e9', color: '#2e7d32', borderRadius: '12px' }}>
-                Redirecting you to attendance form...
+                Redirecting you to feedback form...
              </div>
           ) : (
              <div id="reader"></div>

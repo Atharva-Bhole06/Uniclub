@@ -62,6 +62,7 @@ export const attendanceAPI = {
   mark: (data) => api.post('/attendance/mark', data),          // { eventId, token/qr }
   getByEvent: (eventId) => api.get(`/attendance/event/${eventId}`),
   getMyAttendance: () => api.get('/attendance/me'),
+  markDirect: (data) => api.post('/attendance/mark-direct', data),
 };
 
 // ─── NOTIFICATIONS ────────────────────────────────────────────────────────────

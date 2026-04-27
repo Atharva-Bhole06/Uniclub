@@ -14,6 +14,8 @@ public class Registration {
 
     private LocalDateTime registeredAt;
 
+    private boolean present = false;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
