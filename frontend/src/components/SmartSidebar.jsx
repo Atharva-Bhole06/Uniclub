@@ -39,7 +39,7 @@ export default function SmartSidebar() {
 
   const links =
     currentRole === 'STUDENT'   ? STUDENT_LINKS :
-    currentRole === 'CLUB_HEAD' ? HEAD_LINKS    :
+    (currentRole === 'CLUB_HEAD' || currentRole === 'CO_HEAD') ? HEAD_LINKS    :
     currentRole === 'FACULTY'   ? FACULTY_LINKS : STUDENT_LINKS;
 
   return (

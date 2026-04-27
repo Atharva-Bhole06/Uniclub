@@ -47,7 +47,7 @@ export default function FacultyDashboard() {
       {/* Clubs Section */}
       <div style={headerRowStyle}>
         <h2 style={titleStyle}>Clubs</h2>
-        <button className="viewAllBtn" onClick={() => navigate('/student/clubs')}>View All</button>
+        <button className="viewAllBtn" onClick={() => navigate('/faculty/clubs')}>View All</button>
       </div>
       <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(3, 1fr)' }}>
         {clubs.slice(0, 3).map(club => (
@@ -58,7 +58,7 @@ export default function FacultyDashboard() {
       {/* Events Section */}
       <div style={headerRowStyle}>
         <h2 style={titleStyle}>Events</h2>
-        <button className="viewAllBtn" onClick={() => navigate('/student/events')}>View All</button>
+        <button className="viewAllBtn" onClick={() => navigate('/faculty/events')}>View All</button>
       </div>
       <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(3, 1fr)' }}>
         {events.slice(0, 3).map(event => (

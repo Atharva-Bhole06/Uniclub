@@ -41,7 +41,7 @@ export const authAPI = {
 export const clubsAPI = {
   getAll: (params) => api.get('/clubs', { params }),           // ?department=&category=
   getById: (id) => api.get(`/clubs/${id}`),
-  join: (id) => api.post(`/clubs/${id}/join`),
+  join: (id, data) => api.post(`/clubs/${id}/join`, data),
   leave: (id) => api.post(`/clubs/${id}/leave`),
   getMembers: (id) => api.get(`/clubs/${id}/members`),
   getEvents: (id) => api.get(`/clubs/${id}/events`),
@@ -108,6 +108,10 @@ export const headClubAPI = {
   getMyEvents: ()     => api.get('/head/events'),
   createEvent: (data) => api.post('/head/events', data),
   getEventRegistrations: (eventId) => api.get(`/head/events/${eventId}/registrations`),
+  toggleHiring: (data) => api.put('/head/club/hiring', data), // {hiringOpen, interviewDate, interviewTime}
+  getVolunteers: () => api.get('/head/club/volunteers'),
+  updateApplicationStatus: (appId, status) => api.put(`/head/club/volunteers/${appId}`, { status }),
+  promoteToCoHead: (userId) => api.put(`/head/club/volunteers/promote/${userId}`),
   uploadPoster: (clubId, file) => {
     const formData = new FormData();
     formData.append('file', file);

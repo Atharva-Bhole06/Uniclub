@@ -9,16 +9,21 @@ import { LoadingSpinner, EmptyState, PageHeader, FormInput } from '../../compone
 import { Compass, Search } from 'lucide-react';
 import styles from './Student.module.css';
 
-const CATEGORY_OPTIONS = ['All', 'Technical', 'Cultural', 'Sports', 'Literary', 'Social'];
+const STREAMS = ['All', 'General', 'CS', 'IT', 'AIML', 'AIDS', 'EXTC', 'Mechanical', 'Civil'];
+const CLUB_TYPES = ['All', 'Other', 'Technical', 'Sports', 'Cultural', 'Management', 'Social'];
 
 export default function ExploreClubs() {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('All');
+  const [stream, setStream] = useState('All');
+  const [type, setType] = useState('All');
 
   const { data: clubs, loading, error, refetch } = useApi(
-    () => clubsAPI.getAll({ category: category === 'All' ? undefined : category }),
-    [category]
+    () => clubsAPI.getAll({
+      stream: stream === 'All' ? undefined : stream,
+      type: type === 'All' ? undefined : type
+    }),
+    [stream, type]
   );
 
   const { mutate: joinClub } = useMutation((id) => clubsAPI.join(id));
@@ -49,21 +54,34 @@ export default function ExploreClubs() {
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-          <div className={styles.chips}>
-            {CATEGORY_OPTIONS.map(cat => (
-              <button
-                key={cat}
-                className={`${styles.chip} ${category === cat ? styles.chipActive : ''}`}
-                onClick={() => setCategory(cat)}
+          <div className={styles.chips} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label style={{ fontSize: '0.9rem', color: '#a1a1aa' }}>Stream:</label>
+              <select
+                className={styles.searchInput}
+                style={{ padding: '0.4rem 1rem', width: 'auto' }}
+                value={stream}
+                onChange={e => setStream(e.target.value)}
               >
-                {cat}
-              </button>
-            ))}
+                {STREAMS.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label style={{ fontSize: '0.9rem', color: '#a1a1aa' }}>Type:</label>
+              <select
+                className={styles.searchInput}
+                style={{ padding: '0.4rem 1rem', width: 'auto' }}
+                value={type}
+                onChange={e => setType(e.target.value)}
+              >
+                {CLUB_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
           </div>
         </div>
 
         {loading ? <LoadingSpinner /> : (error || filtered.length === 0) ? (
-          <EmptyState icon={Compass} title="No clubs available right now" description="Check back later for new clubs!" />
+          <EmptyState icon={Compass} title="No clubs found" description="Try adjusting your filters or search." />
         ) : (
           <motion.div
             className={styles.clubsGrid}

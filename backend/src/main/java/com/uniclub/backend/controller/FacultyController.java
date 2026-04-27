@@ -5,8 +5,11 @@ import com.uniclub.backend.entity.Role;
 import com.uniclub.backend.entity.User;
 import com.uniclub.backend.repository.UserRepository;
 import com.uniclub.backend.service.EventService;
+import com.uniclub.backend.service.ExcelExportService;
 import com.uniclub.backend.service.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,9 @@ public class FacultyController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private ExcelExportService excelExportService;
 
     @Autowired
     private UserRepository userRepository;
@@ -44,6 +50,27 @@ public class FacultyController {
 
         if (user.getRole() != Role.FACULTY) {
             throw new RuntimeException("Forbidden: Resource strictly requires FACULTY role");
+        }
+        return user;
+    }
+
+    private User enforceFacultyOrHeadAuth(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer dev-token-")) {
+            throw new RuntimeException("Unauthorized: Valid Developer Token required");
+        }
+        String idStr = authHeader.substring("Bearer dev-token-".length());
+        int userId;
+        try {
+            userId = Integer.parseInt(idStr);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Malformed mock token format");
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+
+        if (user.getRole() != Role.FACULTY && user.getRole() != Role.CLUB_HEAD) {
+            throw new RuntimeException("Forbidden: Resource strictly requires FACULTY or CLUB_HEAD role");
         }
         return user;
     }
@@ -123,6 +150,33 @@ public class FacultyController {
             return ResponseEntity.ok(eventService.getApprovedEvents());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+        }
+    }
+
+    // ── GET /api/faculty/attendance/export/{eventId} ─────────────────────────
+    @GetMapping("/attendance/export/{eventId}")
+    public ResponseEntity<byte[]> exportAttendanceExcel(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @PathVariable Long eventId,
+            @RequestParam(required = false) String branch,
+            @RequestParam(required = false) String year,
+            @RequestParam(required = false) String division,
+            @RequestParam(required = false) String searchRoll) {
+        try {
+            enforceFacultyOrHeadAuth(token);
+            byte[] excelData = excelExportService.generateAttendanceExcel(eventId, branch, year, division, searchRoll);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+            // We use generic filename here, frontend sets the specific name
+            headers.setContentDispositionFormData("attachment", "Attendance_Report.xlsx");
+            
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(excelData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(("Error generating export: " + e.getMessage() + " - " + e.getClass().getName()).getBytes());
         }
     }
 }

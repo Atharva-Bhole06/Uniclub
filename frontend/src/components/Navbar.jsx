@@ -11,7 +11,7 @@ export default function Navbar() {
 
   const dashboardPath =
     role === 'STUDENT'   ? '/student/dashboard'  :
-    role === 'CLUB_HEAD' ? '/clubhead/dashboard' :
+    (role === 'CLUB_HEAD' || role === 'CO_HEAD') ? '/clubhead/dashboard' :
     role === 'FACULTY'   ? '/faculty/dashboard'  : '/';
 
   return (

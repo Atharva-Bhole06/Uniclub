@@ -32,9 +32,9 @@ export default function Sidebar() {
   const { role } = useAuth();
 
   const links =
-    role === 'STUDENT'   ? STUDENT_LINKS :
-    role === 'CLUB_HEAD' ? HEAD_LINKS    :
-    role === 'FACULTY'   ? FACULTY_LINKS : [];
+    role === 'STUDENT' ? STUDENT_LINKS :
+    (role === 'CLUB_HEAD' || role === 'CO_HEAD') ? HEAD_LINKS :
+    role === 'FACULTY' ? FACULTY_LINKS : [];
 
   return (
     <aside className={styles.sidebar}>

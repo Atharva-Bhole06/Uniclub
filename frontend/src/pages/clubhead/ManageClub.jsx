@@ -9,6 +9,9 @@ import styles from './ClubHead.module.css';
 const BACKEND = 'http://localhost:8080';
 const fadeUp = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } } };
 
+const STREAMS = ['General', 'CS', 'IT', 'AIML', 'AIDS', 'EXTC', 'Mechanical', 'Civil'];
+const CLUB_TYPES = ['Other', 'Technical', 'Sports', 'Cultural', 'Management', 'Social'];
+
 export default function ManageClub() {
   const [club, setClub] = useState(null);
   const [clubLoading, setClubLoading] = useState(true);
@@ -16,6 +19,8 @@ export default function ManageClub() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [description, setDescription] = useState('');
   const [website, setWebsite] = useState('');
+  const [stream, setStream] = useState('General');
+  const [type, setType] = useState('Other');
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState('');
@@ -27,6 +32,8 @@ export default function ManageClub() {
         setClub(c);
         setDescription(c.description || '');
         setWebsite(c.websiteLink || '');
+        setStream(c.stream || 'General');
+        setType(c.type || 'Other');
         if (c.posterUrl) {
           setPosterPreview(`${BACKEND}/${c.posterUrl}`);
         }
@@ -69,9 +76,11 @@ export default function ManageClub() {
         clubId: club.id,
         description,
         websiteLink: website,
+        stream,
+        type
       });
 
-      setClub(prev => ({ ...prev, description, websiteLink: website }));
+      setClub(prev => ({ ...prev, description, websiteLink: website, stream, type }));
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3500);
     } catch (err) {
@@ -141,6 +150,30 @@ export default function ManageClub() {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Write a description for your club..."
                   />
+                </div>
+
+                <div className={styles.formGroup} style={{ marginTop: '1rem' }}>
+                  <label className={styles.formLabel}>Club Type <span style={{color: 'red'}}>*</span></label>
+                  <select 
+                    className={styles.inputField}
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                    required
+                  >
+                    {CLUB_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+
+                <div className={styles.formGroup} style={{ marginTop: '1rem' }}>
+                  <label className={styles.formLabel}>Stream <span style={{color: 'red'}}>*</span></label>
+                  <select 
+                    className={styles.inputField}
+                    value={stream}
+                    onChange={(e) => setStream(e.target.value)}
+                    required
+                  >
+                    {STREAMS.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
                 </div>
 
                 <div className={styles.formGroup} style={{ marginTop: '1rem' }}>

@@ -1,5 +1,5 @@
 package com.uniclub.backend.entity;
 
 public enum Role {
-    STUDENT, FACULTY, CLUB_HEAD
+    STUDENT, FACULTY, CLUB_HEAD, CO_HEAD
 }

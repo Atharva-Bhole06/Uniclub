@@ -11,6 +11,37 @@ function AttendanceDetailsView({ attendance, selectedEvent }) {
   const [filterYear, setFilterYear] = useState('');
   const [filterDiv, setFilterDiv] = useState('');
   const [searchRoll, setSearchRoll] = useState('');
+  const [exporting, setExporting] = useState(false);
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const params = new URLSearchParams();
+      if (filterBranch) params.append('branch', filterBranch);
+      if (filterYear) params.append('year', filterYear);
+      if (filterDiv) params.append('division', filterDiv);
+      if (searchRoll) params.append('searchRoll', searchRoll);
+
+      const response = await api.get(`/faculty/attendance/export/${selectedEvent.id}?${params.toString()}`, {
+        responseType: 'blob'
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      const safeTitle = selectedEvent.title.replace(/[^a-zA-Z0-9]/g, '_');
+      const dateStr = new Date(selectedEvent.startTime).toISOString().split('T')[0];
+      link.setAttribute('download', `Attendance_${safeTitle}_${dateStr}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert("Failed to export attendance data.");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const filtered = attendance.filter(a => {
     const student = a.student || {};
@@ -25,11 +56,18 @@ function AttendanceDetailsView({ attendance, selectedEvent }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-      <div className={styles.attendanceStats} style={{ marginBottom: 0 }}>
-        <div style={{ display: 'flex', gap: '2rem', width: '100%' }}>
+      <div className={styles.attendanceStats} style={{ marginBottom: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '2rem' }}>
           <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#c9f28f' }}>{selectedEvent?.registeredCount || 0}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Registered</div></div>
           <div><span style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{attendance.length}</span><div style={{ color: '#888', fontSize: '0.85rem', textTransform: 'uppercase' }}>Total Present</div></div>
         </div>
+        <button 
+          onClick={handleExport} 
+          disabled={exporting}
+          style={{ background: '#c9f28f', color: '#000', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: exporting ? 'not-allowed' : 'pointer', whiteSpace: 'nowrap', transition: 'opacity 0.2s' }}
+        >
+          {exporting ? 'Generating...' : 'Download Excel'}
+        </button>
       </div>
 
       <div style={{ display: 'flex', gap: '10px', background: '#1a1a1a', padding: '15px', borderRadius: '8px', flexWrap: 'wrap' }}>

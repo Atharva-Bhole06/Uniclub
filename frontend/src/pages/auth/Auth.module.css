@@ -1,16 +1,18 @@
 .page {
   min-height: 100vh;
-  background: #050505;
+  background: transparent;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background-image: radial-gradient(ellipse at top, rgba(201,242,143,0.04) 0%, transparent 60%);
   position: relative;
+  z-index: 1;
 }
 
+/* Glass Navbar — matches landing page, dots visible through */
 .navbar {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -18,9 +20,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 4rem;
-  z-index: 100;
-  background: transparent;
+  padding: 1rem 4rem;
+  z-index: 200;
+  background: rgba(4, 6, 8, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.4s ease;
 }
 
 .navLogo {
@@ -42,16 +48,20 @@
 }
 
 @media (max-width: 768px) {
-  .navbar { padding: 1.5rem 2rem; }
+  .navbar { padding: 1rem 2rem; }
 }
 
+/* Card (form box) */
 .card {
-  background: #0d0d0d;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(13, 13, 13, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 28px;
   padding: 2.5rem;
   width: 100%;
   max-width: 460px;
+  margin-top: 5rem;
+  position: relative;
+  z-index: 10;
   animation: slideIn 0.4s ease;
 }
 
@@ -96,8 +106,8 @@
 }
 
 .errorBanner {
-  background: rgba(239,68,68,0.08);
-  border: 1px solid rgba(239,68,68,0.25);
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
   border-radius: 12px;
   padding: 0.75rem 1rem;
   color: #fca5a5;
@@ -131,8 +141,8 @@
 .checkCircle {
   width: 64px; height: 64px;
   border-radius: 50%;
-  background: rgba(201,242,143,0.1);
-  border: 2px solid rgba(201,242,143,0.4);
+  background: rgba(201, 242, 143, 0.1);
+  border: 2px solid rgba(201, 242, 143, 0.4);
   color: #c9f28f;
   font-size: 1.75rem;
   display: flex;

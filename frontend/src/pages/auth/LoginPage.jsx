@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { FormInput, Button } from '../../components/UI';
+import DotMatrixBackground from '../../components/UI/DotMatrixBackground';
 import styles from './Auth.module.css';
 
 export default function LoginPage() {
@@ -35,7 +36,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.page}>
+    <>
+      <DotMatrixBackground />
+
+      {/* Navbar is fixed and needs no parent wrapper */}
       <nav className={styles.navbar}>
         <div className={styles.navLogo} onClick={() => navigate('/')}>
           <img src="/images/logo.png" alt="UniClub Logo" className={styles.navLogoImg} />
@@ -46,41 +50,47 @@ export default function LoginPage() {
         </div>
       </nav>
 
-      <div className={styles.card}>
-        <h1 className={styles.heading}>Welcome back</h1>
-        <p className={styles.sub}>Sign in to your account to continue</p>
+      {/* Page content — centered, sits above canvas */}
+      <div className={styles.page}>
+        <div className={styles.card}>
+          <h1 className={styles.heading}>Welcome back</h1>
+          <p className={styles.sub}>Sign in to your account to continue</p>
 
-        {error && <div className={styles.errorBanner}>{error}</div>}
+          {error && <div className={styles.errorBanner}>{error}</div>}
 
-        <form onSubmit={handleSubmit} className={styles.form}>
-          <FormInput
-            label="Email address"
-            name="email"
-            type="email"
-            placeholder="you@college.edu"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-          <FormInput
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-          <Button type="submit" variant="primary" loading={loading} style={{ width: '100%', marginTop: '0.5rem' }}>
-            Sign In
-          </Button>
-        </form>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <FormInput
+              label="Email address"
+              name="email"
+              type="email"
+              placeholder="you@college.edu"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+            <FormInput
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <div style={{ textAlign: 'right', marginTop: '-0.5rem', marginBottom: '1rem' }}>
+              <Link to="/forgot-password" className={styles.link} style={{ fontSize: '0.85rem' }}>Forgot Password?</Link>
+            </div>
+            <Button type="submit" variant="primary" loading={loading} style={{ width: '100%' }}>
+              Sign In
+            </Button>
+          </form>
 
-        <p className={styles.footer}>
-          Don't have an account?{' '}
-          <Link to="/register" className={styles.link}>Create one</Link>
-        </p>
+          <p className={styles.footer}>
+            Don't have an account?{' '}
+            <Link to="/register" className={styles.link}>Create one</Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

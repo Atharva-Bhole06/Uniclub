@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
 
 import StudentDashboard from './pages/student/StudentDashboard';
 import ExploreClubs from './pages/student/ExploreClubs';
@@ -38,7 +39,13 @@ function RequireAuth({ role, children }) {
   const { isAuthenticated, role: userRole, loading } = useAuth();
   if (loading) return null;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-  if (role && userRole !== role) return <Navigate to="/" replace />;
+  if (role) {
+    if (role === 'CLUB_HEAD' && userRole === 'CO_HEAD') {
+      // allow CO_HEAD to access CLUB_HEAD routes
+    } else if (userRole !== role) {
+      return <Navigate to="/" replace />;
+    }
+  }
   return children;
 }
 
@@ -47,7 +54,7 @@ function PublicRoute({ children }) {
   if (loading) return null;
   if (isAuthenticated) {
     const path = role === 'STUDENT' ? '/student/dashboard'
-      : role === 'CLUB_HEAD' ? '/clubhead/dashboard'
+      : (role === 'CLUB_HEAD' || role === 'CO_HEAD') ? '/clubhead/dashboard'
       : '/faculty/dashboard';
     return <Navigate to={path} replace />;
   }
@@ -63,6 +70,7 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+      <Route path="/forgot-password" element={<PublicRoute><ForgotPasswordPage /></PublicRoute>} />
 
       {/* Student */}
       <Route path="/student/dashboard" element={<RequireAuth role="STUDENT"><StudentDashboard /></RequireAuth>} />
@@ -91,6 +99,8 @@ function AppRoutes() {
       <Route path="/faculty/create-club" element={<RequireAuth role="FACULTY"><CreateClub /></RequireAuth>} />
       <Route path="/faculty/approvals" element={<RequireAuth role="FACULTY"><EventApproval /></RequireAuth>} />
       <Route path="/faculty/attendance" element={<RequireAuth role="FACULTY"><AttendanceMonitor /></RequireAuth>} />
+      <Route path="/faculty/clubs" element={<RequireAuth role="FACULTY"><ExploreClubs /></RequireAuth>} />
+      <Route path="/faculty/events" element={<RequireAuth role="FACULTY"><ExploreEvents /></RequireAuth>} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/" replace />} />
