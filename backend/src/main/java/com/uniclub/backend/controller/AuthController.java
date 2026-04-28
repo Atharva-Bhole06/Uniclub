@@ -414,6 +414,14 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/test-hash")
+    public ResponseEntity<String> testHash() {
+        User u = userRepository.findByEmail("riya@apsit.edu.in").orElse(null);
+        if (u == null) return ResponseEntity.ok("Not found");
+        boolean match = passwordEncoder.matches("123456", u.getPassword());
+        return ResponseEntity.ok("DB Pass: " + u.getPassword() + " | Match 123456: " + match);
+    }
+
     private <T> ResponseEntity<ApiResponse<T>> badRequest(String msg) {
         return ResponseEntity.badRequest().body(ApiResponse.error(msg));
     }
